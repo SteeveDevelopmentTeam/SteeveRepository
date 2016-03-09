@@ -3,7 +3,6 @@ package com.steeve.steeveapp;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,7 +31,7 @@ public class MainActivity extends Activity{
 
     private void setupList() {
         listImages = new int[]{android.R.drawable.btn_dialog, android.R.drawable.btn_radio};
-        listTexts = new String[]{"Gimme MONEY", "Page two"};
+        listTexts = new String[]{"Gimme money", "Shopping"};
         actionList= (ListView) findViewById(R.id.mainList);
         actionList.setAdapter(new ListAdapter(this, listTexts, listImages));
     }

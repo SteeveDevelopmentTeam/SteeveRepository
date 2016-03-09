@@ -105,4 +105,18 @@ class JSONDecoder {
         Float [] debtSummary = new Float[]{pandoAmount, rimoAmount, neriAmount, romanAmount};
         return debtSummary;
     }
+
+    public static String[] getUserShoppingData(int userId, String dbShoppingData) throws JSONException {
+        String s2 = dbShoppingData;
+        JSONArray reader;
+
+        reader = new JSONArray(s2);
+        String s3 = reader.toString();
+        Log.v("Parsed shopping data", "Parsed string: " + s3);
+        JSONObject obj2 = (JSONObject) reader.get(userId);
+        String user = (String) obj2.get("User");
+        String need = (String) obj2.get("Need");
+        String[] shoppingData = new String[]{user, need};
+        return shoppingData;
+    }
 }

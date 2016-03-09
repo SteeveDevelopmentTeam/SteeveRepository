@@ -443,7 +443,6 @@ public class DebtActivity extends Activity{
 
         @Override
         protected Object doInBackground(Object... arg0) {
-            //readDbData();
             readDbDataSummary();
             return null;
         }

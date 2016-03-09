@@ -64,8 +64,8 @@ public class ListAdapter extends BaseAdapter{
                         context.startActivity(pageOneIntent);
                         break;
                     case 1:
-                        Intent pageTwoIntent=new Intent(context, PageTwoActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(pageTwoIntent);
+                        Intent shoppingIntent = new Intent(context, ShoppingActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(shoppingIntent);
                         break;
                 }
             }
