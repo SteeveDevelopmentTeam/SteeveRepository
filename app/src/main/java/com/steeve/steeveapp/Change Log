@@ -4,6 +4,7 @@
    -New features
         f0.0.1: Fatto collegamento della pagina DebtActivity col database (tabella "debts") su altervista
         f0.0.2: Aggiunta pagina per registrare le nuove transazioni
+        f0.0.3: Aggiunti contatori dei singoli debiti e crediti
 
 
    -Bug fixes
