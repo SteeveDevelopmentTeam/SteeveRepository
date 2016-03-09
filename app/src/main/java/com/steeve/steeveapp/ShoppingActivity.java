@@ -49,6 +49,7 @@ public class ShoppingActivity extends Activity {
     private static boolean need;
     private static ImageView personalStatus;
     private static Integer userID;
+    private String ciao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
