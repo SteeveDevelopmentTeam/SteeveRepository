@@ -49,7 +49,6 @@ public class ShoppingActivity extends Activity {
     private static boolean need;
     private static ImageView personalStatus;
     private static Integer userID;
-    private String ciao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,9 @@ public class ShoppingActivity extends Activity {
     }
 
     private void askForID() {
-        if (firstExecution) {
+        sharedPreferences = getSharedPreferences("userNamePreference", MODE_PRIVATE);
+        userName = sharedPreferences.getString("userName", null);
+        if (userName == null) {
             need = false;
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(ShoppingActivity.this);
             //builderSingle.setIcon(R.drawable.ic_launcher);
@@ -105,9 +106,11 @@ public class ShoppingActivity extends Activity {
                         personalStatus = roStatusButton;
                         userID = 3;
                     }
+                    editor = getSharedPreferences("userIdPreference", MODE_PRIVATE).edit();
+                    editor.putInt("userID", userID);
+                    editor.commit();
 
                     new Connection().execute();
-
                     AlertDialog.Builder builderInner = new AlertDialog.Builder(ShoppingActivity.this);
                     //builderInner.setMessage(userName);
                     builderInner.setTitle("Ciao, " + userName + "!");
@@ -122,9 +125,6 @@ public class ShoppingActivity extends Activity {
             });
             builderSingle.show();
         }
-        SharedPreferences.Editor editor = getSharedPreferences("userNamePreference", MODE_PRIVATE).edit();
-        editor.putString("userName", userName);
-        editor.commit();
     }
 
     @Override
@@ -205,7 +205,7 @@ public class ShoppingActivity extends Activity {
                 try {
                     while ((line = reader.readLine()) != null) {
                         sb.append(line + "\n");
-                        Log.v(LOG_TAG, line);
+                        Log.v("Log1", line);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -227,6 +227,7 @@ public class ShoppingActivity extends Activity {
 
 
     public String getShoppingData() {
+        builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet("http://steeve.altervista.org/VecchioSito/pages/php/get_shopping_data.php");
         try {
@@ -249,7 +250,7 @@ public class ShoppingActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.v(LOG_TAG, builder.toString());
+        Log.v("getShoppingData result", builder.toString());
         shoppingData = builder.toString();
         return builder.toString();
     }
