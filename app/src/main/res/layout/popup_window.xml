@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/cd_container_shape">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text=""
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="25sp"
+        android:id="@+id/sumUserId"
+        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sumUserId"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/debtPopupLayout">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Debts: "
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="20sp"
+        android:id="@+id/textView14"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:id="@+id/sumTVDuser1"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/textView14"
+            android:layout_toEndOf="@+id/textView14" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            android:id="@+id/sumTVDdebt1"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVDuser1"
+            android:layout_toEndOf="@+id/sumTVDuser1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:id="@+id/sumTVDuser2"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVDdebt1"
+            android:layout_toEndOf="@+id/sumTVDdebt1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            android:id="@+id/sumTVDdebt2"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVDuser2"
+            android:layout_toEndOf="@+id/sumTVDuser2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:id="@+id/sumTVDuser3"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVDdebt2"
+            android:layout_toEndOf="@+id/sumTVDdebt2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            android:id="@+id/sumTVDdebt3"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVDuser3"
+            android:layout_toEndOf="@+id/sumTVDuser3" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/debtPopupLayout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Credits: "
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="20sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView22" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:id="@+id/sumTVCuser1"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/textView22"
+            android:layout_toEndOf="@+id/textView22" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="18sp"
+            android:id="@+id/sumTVCdebt1"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVCuser1"
+            android:layout_toEndOf="@+id/sumTVCuser1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:id="@+id/sumTVCuser2"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVCdebt1"
+            android:layout_toEndOf="@+id/sumTVCdebt1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="18sp"
+            android:id="@+id/sumTVCdebt2"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVCuser2"
+            android:layout_toEndOf="@+id/sumTVCuser2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:id="@+id/sumTVCuser3"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVCdebt2"
+            android:layout_toEndOf="@+id/sumTVCdebt2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="18sp"
+            android:id="@+id/sumTVCdebt3"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVCuser3"
+            android:layout_toEndOf="@+id/sumTVCuser3" />
+    </RelativeLayout>
+</RelativeLayout>
