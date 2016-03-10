@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -49,6 +51,7 @@ public class ShoppingActivity extends Activity {
     private static boolean need;
     private static ImageView personalStatus;
     private static Integer userID;
+    private Float needAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,9 @@ public class ShoppingActivity extends Activity {
     private void askForID() {
         sharedPreferences = getSharedPreferences("userNamePreference", MODE_PRIVATE);
         userName = sharedPreferences.getString("userName", null);
-        if (userName == null) {
+        sharedPreferences = getSharedPreferences("userIdPreference", MODE_PRIVATE);
+        userID = sharedPreferences.getInt("userID", -1);
+        if (userName == null && userID == -1) {
             need = false;
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(ShoppingActivity.this);
             //builderSingle.setIcon(R.drawable.ic_launcher);
@@ -124,6 +129,22 @@ public class ShoppingActivity extends Activity {
                 }
             });
             builderSingle.show();
+        } else {
+            new Connection().execute();
+            setStatusButton();
+        }
+    }
+
+
+    private void setStatusButton() {
+        if (userName.equals("Pando")) {
+            personalStatus = pStatusButton;
+        } else if (userName.equals("Rimo")) {
+            personalStatus = riStatusButton;
+        } else if (userName.equals("Neri")) {
+            personalStatus = nStatusButton;
+        } else {
+            personalStatus = roStatusButton;
         }
     }
 
@@ -146,7 +167,27 @@ public class ShoppingActivity extends Activity {
         mainAlertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new UpdateConnection().execute();
+                if (need) {
+                    mainAlertButton.setImageResource(R.drawable.green_alert_button);
+                    new UpdateConnection().execute();
+                } else {
+                    mainAlertButton.setImageResource(R.drawable.alert_button);
+
+                    final RelativeLayout ratingLayout = (RelativeLayout) findViewById(R.id.ratingLayout);
+                    ratingLayout.setVisibility(View.VISIBLE);
+                    final RatingBar starRatingBar = (RatingBar) findViewById(R.id.needRatingBar);
+                    starRatingBar.setRating(0);
+                    starRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                            if (fromUser) {
+                                needAmount = rating;
+                                ratingLayout.setVisibility(View.GONE);
+                                new UpdateConnection().execute();
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -173,6 +214,8 @@ public class ShoppingActivity extends Activity {
                 });
             } else {
                 json.put("Need", true);
+                json.put("Amount", needAmount);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -302,31 +345,65 @@ public class ShoppingActivity extends Activity {
         if (JSONDecoder.getUserShoppingData(0, shoppingData)[1].equals("0")) {
             pStatusButton.setImageResource(R.drawable.green_alert_button);
         } else {
-            pStatusButton.setImageResource(R.drawable.alert_button);
+            if (JSONDecoder.getUserShoppingData(0, shoppingData)[2].equals("1")) {
+                pStatusButton.setImageResource(R.drawable.alert_1_star);
+            } else if (JSONDecoder.getUserShoppingData(0, shoppingData)[2].equals("2")) {
+                pStatusButton.setImageResource(R.drawable.alert_2_star);
+            } else {
+                pStatusButton.setImageResource(R.drawable.alert_3_star);
+            }
         }
 
         if (JSONDecoder.getUserShoppingData(1, shoppingData)[1].equals("0")) {
             riStatusButton.setImageResource(R.drawable.green_alert_button);
         } else {
-            riStatusButton.setImageResource(R.drawable.alert_button);
+            if (JSONDecoder.getUserShoppingData(1, shoppingData)[2].equals("1")) {
+                riStatusButton.setImageResource(R.drawable.alert_1_star);
+            } else if (JSONDecoder.getUserShoppingData(1, shoppingData)[2].equals("2")) {
+                riStatusButton.setImageResource(R.drawable.alert_2_star);
+            } else {
+                riStatusButton.setImageResource(R.drawable.alert_3_star);
+            }
         }
 
         if (JSONDecoder.getUserShoppingData(2, shoppingData)[1].equals("0")) {
             nStatusButton.setImageResource(R.drawable.green_alert_button);
         } else {
-            nStatusButton.setImageResource(R.drawable.alert_button);
+            if (JSONDecoder.getUserShoppingData(2, shoppingData)[2].equals("1")) {
+                nStatusButton.setImageResource(R.drawable.alert_1_star);
+            } else if (JSONDecoder.getUserShoppingData(2, shoppingData)[2].equals("2")) {
+                nStatusButton.setImageResource(R.drawable.alert_2_star);
+            } else {
+                nStatusButton.setImageResource(R.drawable.alert_3_star);
+            }
         }
 
         if (JSONDecoder.getUserShoppingData(3, shoppingData)[1].equals("0")) {
             roStatusButton.setImageResource(R.drawable.green_alert_button);
         } else {
-            roStatusButton.setImageResource(R.drawable.alert_button);
+            if (JSONDecoder.getUserShoppingData(3, shoppingData)[2].equals("1")) {
+                roStatusButton.setImageResource(R.drawable.alert_1_star);
+            } else if (JSONDecoder.getUserShoppingData(3, shoppingData)[2].equals("2")) {
+                roStatusButton.setImageResource(R.drawable.alert_2_star);
+            } else {
+                roStatusButton.setImageResource(R.drawable.alert_3_star);
+            }
         }
 
         if (JSONDecoder.getUserShoppingData(userID, shoppingData)[1].equals("0")) { //Set colore mainAlertButton all'avvio
             mainAlertButton.setImageResource(R.drawable.alert_button);
+            need = false;
+            Log.v(LOG_TAG, "Colore mainAlertButton: ROSSO");
         } else {
             mainAlertButton.setImageResource(R.drawable.green_alert_button);
+            need = true;
+            Log.v(LOG_TAG, "Colore mainAlertButton: VERDE");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }

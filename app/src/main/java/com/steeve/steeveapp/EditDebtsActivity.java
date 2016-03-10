@@ -416,4 +416,9 @@ public class EditDebtsActivity  extends Activity{
         transactionLV.setAdapter(transactionAdapter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

@@ -148,4 +148,24 @@
         android:id="@+id/shoppingTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/ratingLayout"
+        android:layout_above="@+id/mainAlertButton"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rating_bar_background"
+        android:visibility="visible">
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/needRatingBar"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:stepSize="1"
+            android:numStars="3" />
+    </RelativeLayout>
 </RelativeLayout>

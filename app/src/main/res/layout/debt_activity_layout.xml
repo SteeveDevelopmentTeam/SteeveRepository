@@ -323,8 +323,8 @@
     </RelativeLayout>
 
     <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/dollar"
         android:background="@drawable/roundbutton"
         android:scaleType="fitXY"

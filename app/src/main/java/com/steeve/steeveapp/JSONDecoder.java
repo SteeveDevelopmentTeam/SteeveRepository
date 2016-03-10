@@ -116,7 +116,8 @@ class JSONDecoder {
         JSONObject obj2 = (JSONObject) reader.get(userId);
         String user = (String) obj2.get("User");
         String need = (String) obj2.get("Need");
-        String[] shoppingData = new String[]{user, need};
+        String amount = (String) obj2.get("Amount");
+        String[] shoppingData = new String[]{user, need, amount};
         return shoppingData;
     }
 }

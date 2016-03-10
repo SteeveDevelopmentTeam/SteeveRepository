@@ -36,7 +36,7 @@ public class DebtActivity extends Activity{
     private String LOG_TAG = "DebtActivity LOG";
     public StringBuilder builder = new StringBuilder();
     public StringBuilder builder2 = new StringBuilder();
-    public String dbData, dbDataSummary;
+    public String dbDataSummary;
     private ProgressDialog progress;
     private Boolean isPopupShowing = false;
     private TextView debtActivityTitleTV;
@@ -559,6 +559,11 @@ public class DebtActivity extends Activity{
         }
         romanCTV.setText(Float.toString(Math.abs(romanCreditTotal)));
         romanDTV.setText(Float.toString(Math.abs(romanDebitTotal)));
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }

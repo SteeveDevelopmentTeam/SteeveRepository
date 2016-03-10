@@ -47,6 +47,7 @@ public class MainActivity extends Activity{
         SharedPreferences.Editor editor = getSharedPreferences("loginCounterPreference", MODE_PRIVATE).edit();
         editor.putInt("loginCounter", loginCount);
         editor.commit();
+        Runtime.getRuntime().gc();
     }
 
     private void updateCounter() {
@@ -54,4 +55,5 @@ public class MainActivity extends Activity{
         TextView counterTextView = (TextView) findViewById(R.id.loginCounterText);
         counterTextView.setText(loginCount.toString());
     }
+
 }
