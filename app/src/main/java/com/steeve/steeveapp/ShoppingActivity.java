@@ -1,15 +1,12 @@
 package com.steeve.steeveapp;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -31,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * Created by Roman on 01/03/2016.
@@ -47,11 +45,12 @@ public class ShoppingActivity extends Activity {
     private ImageView nStatusButton;
     private ImageView roStatusButton;
     private static boolean firstExecution = true;
-    private static String userName;
+    private static String userName, token, retrievedTokenSetString;
     private static boolean need;
     private static ImageView personalStatus;
     private static Integer userID;
     private Float needAmount;
+    private String [] tokenSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,91 +61,29 @@ public class ShoppingActivity extends Activity {
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "Righteous-Regular.ttf");
         shoppingTitleTV.setTypeface(myTypeface);
         askForID();
+        new getTokenSetConnection().execute();
         Log.v(LOG_TAG, "Local need: " + need);
     }
 
     private void askForID() {
-        sharedPreferences = getSharedPreferences("userNamePreference", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("userDataPreferences", MODE_PRIVATE);
         userName = sharedPreferences.getString("userName", null);
-        sharedPreferences = getSharedPreferences("userIdPreference", MODE_PRIVATE);
         userID = sharedPreferences.getInt("userID", -1);
-        if (userName == null && userID == -1) {
-            need = false;
-            AlertDialog.Builder builderSingle = new AlertDialog.Builder(ShoppingActivity.this);
-            //builderSingle.setIcon(R.drawable.ic_launcher);
-            builderSingle.setTitle("Who are you?");
-
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ShoppingActivity.this, android.R.layout.select_dialog_singlechoice);
-            arrayAdapter.add("Pando");
-            arrayAdapter.add("Rimo");
-            arrayAdapter.add("Neri");
-            arrayAdapter.add("Roman");
-
-            builderSingle.setNegativeButton(
-                    "Cancel",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    userName = arrayAdapter.getItem(which);
-                    SharedPreferences.Editor editor = getSharedPreferences("userNamePreference", MODE_PRIVATE).edit();
-                    editor.putString("userName", userName);
-                    editor.commit();
-                    if (userName.equals("Pando")) {
-                        personalStatus = pStatusButton;
-                        userID = 0;
-                    } else if (userName.equals("Rimo")) {
-                        personalStatus = riStatusButton;
-                        userID = 1;
-                    } else if (userName.equals("Neri")) {
-                        personalStatus = nStatusButton;
-                        userID = 2;
-                    } else {
-                        personalStatus = roStatusButton;
-                        userID = 3;
-                    }
-                    editor = getSharedPreferences("userIdPreference", MODE_PRIVATE).edit();
-                    editor.putInt("userID", userID);
-                    editor.commit();
-
-                    new Connection().execute();
-                    AlertDialog.Builder builderInner = new AlertDialog.Builder(ShoppingActivity.this);
-                    //builderInner.setMessage(userName);
-                    builderInner.setTitle("Ciao, " + userName + "!");
-                    builderInner.setPositiveButton("Fuck you", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builderInner.show();
-                }
-            });
-            builderSingle.show();
-        } else {                         //if already registered skip askForID()
-            new Connection().execute();
-            setStatusButton();
-        }
-    }
-
-
-    private void setStatusButton() {
-        if (userName.equals("Pando")) {
+        token = sharedPreferences.getString("token", null);
+        need = false;
+        if (userID == 0) {
             personalStatus = pStatusButton;
-        } else if (userName.equals("Rimo")) {
+        } else if (userID == 1) {
             personalStatus = riStatusButton;
-        } else if (userName.equals("Neri")) {
+        } else if (userID == 2) {
             personalStatus = nStatusButton;
         } else {
             personalStatus = roStatusButton;
         }
+        new Connection().execute();
     }
+
+
 
     @Override
     protected void onResume() {
@@ -184,6 +121,8 @@ public class ShoppingActivity extends Activity {
                                 needAmount = rating;
                                 ratingLayout.setVisibility(View.GONE);
                                 new UpdateConnection().execute();
+                                new SendAsyncMessage().execute();
+
                             }
                         }
                     });
@@ -340,6 +279,138 @@ public class ShoppingActivity extends Activity {
             }
         }
     }
+
+
+    public class getTokenSetConnection extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object... arg0) {
+            try {
+                getTokenSet();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
+    }
+
+    private class SendAsyncMessage extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object... arg0) {
+            try {
+                sendMessage();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
+    }
+
+
+    public String getTokenSet() throws JSONException {
+        builder = new StringBuilder();
+        HttpClient client = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet("http://steeve.altervista.org/VecchioSito/pages/php/get_token_set.php");
+        try {
+            HttpResponse response = client.execute(httpGet);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
+            } else {
+                Log.v(LOG_TAG, "Failed to download file");
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.v("getShoppingData result", builder.toString());
+        retrievedTokenSetString = builder.toString();
+        setupTokenSetArray();
+        return builder.toString();
+    }
+
+
+    private void setupTokenSetArray() throws JSONException {
+        tokenSet = JSONDecoder.getTokenSet(retrievedTokenSetString);
+        Log.v(LOG_TAG, "Users TOKEN SET: " + Arrays.toString(tokenSet));
+    }
+
+
+    private void sendMessage() throws JSONException {
+
+        // Create a new HttpClient and Post Header
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://steeve.altervista.org/VecchioSito/pages/php/send_message.php");
+        JSONObject json = new JSONObject();
+
+        try {
+            // JSON data:
+            JSONArray JSONTokenArray = new JSONArray(Arrays.asList(tokenSet));
+            json.put("regId", JSONTokenArray);
+            json.put("message", "ProvaMessaggio");
+
+
+            JSONArray postjson = new JSONArray();
+            postjson.put(json);
+
+            // Post the data:
+            httppost.setHeader("json", json.toString());
+            httppost.getParams().setParameter("jsonpost", postjson);
+
+            // Execute HTTP Post Request
+            Log.v("SendMessage", "Created JSON: " + json);
+            HttpResponse response = httpclient.execute(httppost);
+
+            // for JSON:
+            if (response != null) {
+                InputStream is = response.getEntity().getContent();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                StringBuilder sb = new StringBuilder();
+
+                String line = null;
+                try {
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                        Log.v("Log1", line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+        }
+    }
+
 
     private void populateShoppingData() throws JSONException {
         if (JSONDecoder.getUserShoppingData(0, shoppingData)[1].equals("0")) {

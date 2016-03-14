@@ -120,4 +120,23 @@ class JSONDecoder {
         String[] shoppingData = new String[]{user, need, amount};
         return shoppingData;
     }
+
+    public static String[] getTokenSet( String retrievedTokenSetString) throws JSONException {
+
+            //JSONParser parser = new JSONParser();
+            String s = retrievedTokenSetString;
+            String [] tokenSet;
+            Integer tokenCount;
+            JSONArray reader;
+
+            reader = new JSONArray(s);
+            tokenCount = reader.length();
+            tokenSet = new String[tokenCount];
+            for (Integer i=0; i<tokenCount; i++) {
+                JSONObject obj2 = (JSONObject)reader.get(i);
+                String token = (String) obj2.get("RegID");
+                tokenSet[i] = token;
+            }
+            return tokenSet;
+        }
 }
