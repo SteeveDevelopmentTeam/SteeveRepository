@@ -67,6 +67,10 @@ public class ListAdapter extends BaseAdapter{
                         Intent shoppingIntent = new Intent(context, ShoppingActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(shoppingIntent);
                         break;
+                    case 2:
+                        Intent provaGcmIntent = new Intent(context, GCMMainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(provaGcmIntent);
+                        break;
                 }
             }
         });

@@ -7,4 +7,6 @@
 
  - Stats main page personal
 
- - Use a file to know if firstExecution
+ - Caused by: android.content.res.Resources$NotFoundException: File res/drawable/abc_btn_radio_material.xml from drawable resource ID #0x7f020008  Sul telefono di pando all'apertura di ShoppingActivity
+
+ - Get all regIDs for GCM on AppStart

@@ -129,7 +129,7 @@ public class ShoppingActivity extends Activity {
                 }
             });
             builderSingle.show();
-        } else {
+        } else {                         //if already registered skip askForID()
             new Connection().execute();
             setStatusButton();
         }

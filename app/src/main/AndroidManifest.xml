@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.steeve.steeveapp">
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -9,6 +11,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:largeHeap="true">
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.steeve.steeveapp" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".MyGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
+        <!-- [START instanceId_listener] -->
+        <!-- [END instanceId_listener] -->
+        <service
+            android:name=".RegistrationIntentService"
+            android:exported="false">
+        </service>
+
+        <activity
+            android:name=".GCMMainActivity"
+            android:label="@string/app_name" >
+        </activity>
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name"
@@ -42,5 +72,8 @@
         </activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <permission android:name="com.steeve.steeveapp.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.steeve.steeveapp.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
 </manifest>
