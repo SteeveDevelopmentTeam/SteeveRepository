@@ -365,8 +365,9 @@ public class ShoppingActivity extends Activity {
         try {
             // JSON data:
             JSONArray JSONTokenArray = new JSONArray(Arrays.asList(tokenSet));
+            JSONArray JSONShoppingArray = new JSONArray(shoppingData);
             json.put("regId", JSONTokenArray);
-            json.put("message", "ProvaMessaggio");
+            json.put("message", JSONShoppingArray);
 
 
             JSONArray postjson = new JSONArray();

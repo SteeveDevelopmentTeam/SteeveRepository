@@ -1,14 +1,12 @@
 package com.steeve.steeveapp;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,13 +24,14 @@ public class WelcomeActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String userName, token;
     private Integer userID;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private boolean isReceiverRegistered = false;
+    private GCMBroadcastReceiver mRegistrationBroadcastReceiver;
+    private boolean isReceiverRegistered;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isReceiverRegistered = false;
         setContentView(R.layout.welcome_screen);
         setButtonListener();
         setupUserPreferences();
@@ -41,7 +40,6 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver();
     }
 
 
@@ -75,7 +73,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     userName = arrayAdapter.getItem(which);
                     SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
                     editor.putString("userName", userName);
-                    editor.commit();
+                    editor.apply();
                     if (userName.equals("Pando")) {
                         userID = 0;
                     } else if (userName.equals("Rimo")) {
@@ -87,23 +85,22 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                     editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
                     editor.putInt("userID", userID);
-                    editor.commit();
-
+                    editor.apply();
                     AlertDialog.Builder builderInner = new AlertDialog.Builder(WelcomeActivity.this);
                     builderInner.setTitle("Ciao, " + userName + "!");
                     builderInner.setPositiveButton("Fuck you", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            registerGCMUser();
                         }
                     });
                     builderInner.show();
                 }
             });
             builderSingle.show();
-        } else { }
+        } else { registerGCMUser(); }
 
-        registerGCMUser();
         token = sharedPreferences.getString("token", null);
         Log.v(LOG_TAG, "Registered TOKEN for this client: "+token);
         String allPreferences = sharedPreferences.getAll().toString();
@@ -111,19 +108,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void registerGCMUser() {
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {   //Called after Registration happens
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences.getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                    Log.v(LOG_TAG, "Sent token to GCM server. The App is now configured.");
-                } else {
-                    Log.v(LOG_TAG, "An Error occurred trying to send Token to GCM server.");
-                }
-            }
-        };
-
+        mRegistrationBroadcastReceiver = new GCMBroadcastReceiver();
         registerReceiver();
 
         if (checkPlayServices()) {             // Start IntentService to register this application with GCM.
