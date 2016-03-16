@@ -3,6 +3,9 @@ package com.steeve.steeveapp;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,12 +30,26 @@ public class MainActivity extends Activity{
         loginCount = retrievedCounter;
         updateCounter();
         setupList();
+        setupDrawer();
+    }
+
+    private void setupDrawer() {
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ImageView drawerButton = (ImageView) findViewById(R.id.drawerButton);
+        drawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(actionList);
+            }
+        });
     }
 
     private void setupList() {
-        listImages = new int[]{android.R.drawable.btn_dialog, android.R.drawable.btn_radio};
+        listImages = new int[]{R.drawable.dollar_icon, R.drawable.shopping};
         listTexts = new String[]{"Gimme money", "Shopping"};
-        actionList= (ListView) findViewById(R.id.mainList);
+        actionList= (ListView) findViewById(R.id.drawer_list);
+        View listHeaderLogo = getLayoutInflater().inflate(R.layout.list_header_logo_layout, null);
+        actionList.addHeaderView(listHeaderLogo);
         actionList.setAdapter(new ListAdapter(this, listTexts, listImages));
     }
 

@@ -58,7 +58,7 @@ public class ListAdapter extends BaseAdapter{
             public void onClick(View v) {
                 //Toast.makeText(context, "You Clicked "+result[position], Toast.LENGTH_LONG).show();
                 Log.v(LOG_TAG, "Position: " + position);
-                switch (position) {
+                switch (position) { // Using 1 and 2 index because there is a header view which occupies position 0
                     case 0:
                         Intent pageOneIntent=new Intent(context, DebtActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(pageOneIntent);
