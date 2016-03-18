@@ -45,6 +45,10 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void setupUserPreferences() {
         sharedPreferences = getSharedPreferences("userDataPreferences", Context.MODE_PRIVATE);
+        Integer retrievedCounter = sharedPreferences.getInt("loginCounter", 1);
+        SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+        editor.putInt("loginCounter", retrievedCounter++);
+        editor.apply();
         userName = sharedPreferences.getString("userName", null);
         userID = sharedPreferences.getInt("userID", -1);
         if (userName == null && userID == -1) {

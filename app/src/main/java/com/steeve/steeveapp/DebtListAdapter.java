@@ -8,8 +8,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DebtListAdapter extends BaseAdapter {
     private String LOG_TAG = "DebtListAdapterLOG";
@@ -17,15 +23,16 @@ public class DebtListAdapter extends BaseAdapter {
     String [] usersList;
     String [] receiversList;
     String [] debtAmountsList;
+    String [] dateList;
     private static LayoutInflater inflater=null;
-    private Animation animation;
 
 
-    public DebtListAdapter (Context context, String[] dbUsersList, String[] dbReceiversList, String[] dbDebtsAmountList) {
+    public DebtListAdapter (Context context, String[] dbUsersList, String[] dbReceiversList, String[] dbDebtsAmountList, String [] dbDateList) {
         adapterContext = context;
         usersList = dbUsersList;
         receiversList = dbReceiversList;
         debtAmountsList = dbDebtsAmountList;
+        dateList = dbDateList;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -49,12 +56,24 @@ public class DebtListAdapter extends BaseAdapter {
         TextView debtAmountTV;
         TextView receiverTV;
         TextView euroTV;
-        RelativeLayout colorLayout1;
+        TextView timeStampTV;
+        RelativeLayout colorLayout1, mainDataContainer, dateContainer;
+        ImageView infoButton;
     }
+
+    /*public static CharSequence createDate(String timestamp) {
+        Log.v("DebtListAdapter", "Timestamp before conversion:  " + timestamp);
+        long ts = Long.parseLong(timestamp);
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(ts);
+        Date d = c.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return sdf.format(d);
+    }*/
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder=new Holder();
+        final Holder holder=new Holder();
         Boolean isCredit = false;
         View rowView;
         rowView = inflater.inflate(R.layout.debts_list_item, parent, false);
@@ -64,6 +83,11 @@ public class DebtListAdapter extends BaseAdapter {
         holder.colorLayout1 = (RelativeLayout) rowView.findViewById(R.id.colorLayout1);
         holder.euroTV = (TextView) rowView.findViewById(R.id.euroTV);
         holder.userTV.setText(usersList[position]);
+        holder.mainDataContainer = (RelativeLayout) rowView.findViewById(R.id.mainDataContainer);
+        holder.dateContainer = (RelativeLayout) rowView.findViewById(R.id.dateContainer);
+        holder.timeStampTV = (TextView) rowView.findViewById(R.id.timestampTV);
+        holder.timeStampTV.setText(formattedDate(dateList[position]).toString());
+        holder.infoButton = (ImageView) rowView.findViewById(R.id.transaction_info_button);
         if (Float.parseFloat(debtAmountsList[position])<0) { isCredit = true;  }
         holder.debtAmountTV.setText(Float.toString(Math.abs(Float.parseFloat(debtAmountsList[position]))));
         holder.receiverTV.setText(receiversList[position]);
@@ -81,10 +105,37 @@ public class DebtListAdapter extends BaseAdapter {
             holder.euroTV.setTextColor(Color.parseColor("#00ff00"));
             holder.debtAmountTV.setTextColor(Color.parseColor("#00ff00"));
         }
-        animation = AnimationUtils.loadAnimation(adapterContext, R.anim.slide_in_anim);
+
+        holder.infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.mainDataContainer.getVisibility() == View.VISIBLE) {
+                    holder.mainDataContainer.setVisibility(View.GONE);
+                    holder.dateContainer.setVisibility(View.VISIBLE);
+                } else {
+                    holder.mainDataContainer.setVisibility(View.VISIBLE);
+                    holder.dateContainer.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        Animation animation = AnimationUtils.loadAnimation(adapterContext, R.anim.slide_in_anim);
         animation.setDuration(400);
         rowView.startAnimation(animation);
 
+
         return rowView;
+    }
+
+    private Date formattedDate(String s)  {
+        Locale local = Locale.ITALY;
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy HH:mm:ss", local);
+        Date convertedDate = null;
+        try {
+            convertedDate = format.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return convertedDate;
     }
 } 

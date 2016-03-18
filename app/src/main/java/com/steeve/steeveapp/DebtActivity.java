@@ -1,17 +1,22 @@
 package com.steeve.steeveapp;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,21 +41,70 @@ public class DebtActivity extends Activity{
     private String LOG_TAG = "DebtActivity LOG";
     public StringBuilder builder = new StringBuilder();
     public StringBuilder builder2 = new StringBuilder();
-    public String dbDataSummary;
+    public String dbDataSummary, debtPreference, creditPreference, temporaryDebtPreference, temporaryCreditPreference;
     private ProgressDialog progress;
     private Boolean isPopupShowing = false;
     private TextView debtActivityTitleTV;
+    private SharedPreferences sharedPreferences;
+    private Integer userID;
+    private Float pandoCreditTotal;
+    private Float pandoDebitTotal;
+    private Float rimoCreditTotal;
+    private Float rimoDebitTotal;
+    private Float neriCreditTotal;
+    private Float neriDebitTotal;
+    private Float romanCreditTotal;
+    private Float romanDebitTotal;
+    private ProgressBar progressBarDebt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.debt_activity_layout);
+        sharedPreferences = getSharedPreferences("userDataPreferences", MODE_PRIVATE);
         setupListeners();
-        progress = ProgressDialog.show(this, "Loading", "", true);
+        setupProgressBar();
+        //progress = ProgressDialog.show(this, "Loading", "", true);
         debtActivityTitleTV = (TextView) findViewById(R.id.debtActivityTitle);
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "Righteous-Regular.ttf");
         debtActivityTitleTV.setTypeface(myTypeface);
         }
+
+    private void setupProgressBar() {
+        progressBarDebt = (ProgressBar) findViewById(R.id.progressBarDebt);
+        progressBarDebt.setVisibility(View.VISIBLE);
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBarDebt, "progress", 0, 40);
+        animation.setDuration(1000); // 3.5 second
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
+    }
+
+    private void setDebtPreferences() {
+        debtPreference = sharedPreferences.getString("debt", null);
+        creditPreference = sharedPreferences.getString("credit", null);
+        userID = sharedPreferences.getInt("userID", -1);
+        if ( debtPreference == null || creditPreference == null) {
+            switch (userID) {
+                case 0:
+                    debtPreference = pandoDebitTotal.toString();
+                    creditPreference = pandoCreditTotal.toString();
+                    break;
+                case 1:
+                    debtPreference = rimoDebitTotal.toString();
+                    creditPreference = rimoCreditTotal.toString();
+                    break;
+                case 3:
+                    debtPreference = neriDebitTotal.toString();
+                    creditPreference = neriCreditTotal.toString();
+                    break;
+                default:
+                    debtPreference = romanDebitTotal.toString();
+                    creditPreference = romanCreditTotal.toString();
+                    break;
+            }
+        }
+    }
 
     @Override
     protected void onResume () {
@@ -67,8 +121,8 @@ public class DebtActivity extends Activity{
         editDebtsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openMainIntent = new Intent(DebtActivity.this, EditDebtsActivity.class);
-                startActivity(openMainIntent);
+                Intent openEditIntent = new Intent(getApplicationContext(), EditDebtsActivity.class);
+                startActivityForResult(openEditIntent, 2);
             }
         });
 
@@ -450,12 +504,24 @@ public class DebtActivity extends Activity{
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            try {
-                populateUserData();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            progress.dismiss();
+            ObjectAnimator animation = ObjectAnimator.ofInt(progressBarDebt, "progress", 35, 100);
+            animation.setDuration(500);
+            animation.setInterpolator(new DecelerateInterpolator());
+            animation.start();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressBarDebt.setVisibility(View.GONE);
+                    try {
+                        populateUserData();
+                        setDebtPreferences();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, 700);
         }
     }
 
@@ -464,8 +530,8 @@ public class DebtActivity extends Activity{
         TextView pandoCTV = (TextView) findViewById(R.id.pandoCtext);
         TextView pandoDTV = (TextView) findViewById(R.id.pandoDtext);
         Float [] pandoData = JSONDecoder.getUserSummary(0, dbDataSummary);
-        Float pandoCreditTotal = 0f;
-        Float pandoDebitTotal =  0f;
+        pandoCreditTotal = 0f;
+        pandoDebitTotal =  0f;
         if (pandoData[1] <= 0 ) { 
             pandoCreditTotal = pandoCreditTotal + pandoData[1];
         } else {
@@ -483,6 +549,14 @@ public class DebtActivity extends Activity{
         }
         pandoCTV.setText(Float.toString(Math.abs(pandoCreditTotal)));
         pandoDTV.setText(Float.toString(Math.abs(pandoDebitTotal)));
+        temporaryDebtPreference = sharedPreferences.getString("debt", "ND");
+        temporaryCreditPreference = sharedPreferences.getString("credit", "ND");
+        if (!temporaryCreditPreference.equals(pandoCreditTotal.toString()) || !temporaryDebtPreference.equals(pandoDebitTotal.toString()))  {
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", pandoDebitTotal.toString());
+            editor.putString("credit", pandoCreditTotal.toString());
+            editor.apply();
+        }
         
         
 
@@ -490,8 +564,8 @@ public class DebtActivity extends Activity{
         TextView rimoCTV = (TextView) findViewById(R.id.rimoCtext);
         TextView rimoDTV = (TextView) findViewById(R.id.rimoDtext);
         Float [] rimoData = JSONDecoder.getUserSummary(1, dbDataSummary);
-        Float rimoCreditTotal = 0f;
-        Float rimoDebitTotal =  0f;
+        rimoCreditTotal = 0f;
+        rimoDebitTotal =  0f;
         if (rimoData[0] <= 0 ) {
             rimoCreditTotal = rimoCreditTotal + rimoData[0];
         } else {
@@ -509,14 +583,22 @@ public class DebtActivity extends Activity{
         }
         rimoCTV.setText(Float.toString(Math.abs(rimoCreditTotal)));
         rimoDTV.setText(Float.toString(Math.abs(rimoDebitTotal)));
+        temporaryDebtPreference = sharedPreferences.getString("debt", null);
+        temporaryCreditPreference = sharedPreferences.getString("credit", null);
+        if (!temporaryCreditPreference.equals(rimoCreditTotal)) {
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", rimoDebitTotal.toString());
+            editor.putString("credit", rimoCreditTotal.toString());
+            editor.apply();
+        }
 
 
         //Carico dati Neri
         TextView neriCTV = (TextView) findViewById(R.id.neriCtext);
         TextView neriDTV = (TextView) findViewById(R.id.neriDtext);
         Float [] neriData = JSONDecoder.getUserSummary(2, dbDataSummary);
-        Float neriCreditTotal = 0f;
-        Float neriDebitTotal =  0f;
+        neriCreditTotal = 0f;
+        neriDebitTotal =  0f;
         if (neriData[0] <= 0 ) {
             neriCreditTotal = neriCreditTotal + neriData[0];
         } else {
@@ -534,14 +616,22 @@ public class DebtActivity extends Activity{
         }
         neriCTV.setText(Float.toString(Math.abs(neriCreditTotal)));
         neriDTV.setText(Float.toString(Math.abs(neriDebitTotal)));
+        temporaryDebtPreference = sharedPreferences.getString("debt", null);
+        temporaryCreditPreference = sharedPreferences.getString("credit", null);
+        if (!temporaryCreditPreference.equals(neriCreditTotal)) {
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", neriDebitTotal.toString());
+            editor.putString("credit", neriCreditTotal.toString());
+            editor.apply();
+        }
 
 
         //Carico dati Roman
         TextView romanCTV = (TextView) findViewById(R.id.romanCtext);
         TextView romanDTV = (TextView) findViewById(R.id.romanDtext);
         Float [] romanData = JSONDecoder.getUserSummary(3, dbDataSummary);
-        Float romanCreditTotal = 0f;
-        Float romanDebitTotal =  0f;
+        romanCreditTotal = 0f;
+        romanDebitTotal =  0f;
         if (romanData[0] <= 0 ) {
             romanCreditTotal = romanCreditTotal + romanData[0];
         } else {
@@ -559,11 +649,33 @@ public class DebtActivity extends Activity{
         }
         romanCTV.setText(Float.toString(Math.abs(romanCreditTotal)));
         romanDTV.setText(Float.toString(Math.abs(romanDebitTotal)));
+        temporaryDebtPreference = sharedPreferences.getString("debt", null);
+        temporaryCreditPreference = sharedPreferences.getString("credit", null);
+        if (!temporaryCreditPreference.equals(romanCreditTotal)) {
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", romanDebitTotal.toString());
+            editor.putString("credit", romanCreditTotal.toString());
+            editor.apply();
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == 2) {
+            Log.v(LOG_TAG, "Entered onActivityResult, REFRESHING");
+            finish();
+            startActivity(getIntent());
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
         Runtime.getRuntime().gc();
     }
 }

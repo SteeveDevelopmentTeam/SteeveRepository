@@ -1,19 +1,24 @@
 package com.steeve.steeveapp;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -36,7 +41,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Roman on 02/03/2016.
@@ -63,9 +72,11 @@ public class EditDebtsActivity  extends Activity{
     private String [] usersArray;
     private String [] receiversArray;
     private String[] debtAmountsArray;
+    private String [] timeStampsArray;
     public static Context context;
     public DebtListAdapter transactionAdapter;
     private TextView editDebtsTitleTV;
+    private ProgressBar progressBarEditDebt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +92,17 @@ public class EditDebtsActivity  extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
+        setupProgressBar();
         new AsyncTransactionLoad().execute();
+    }
+
+    private void setupProgressBar() {
+        progressBarEditDebt = (ProgressBar) findViewById(R.id.progressBarEditDebts);
+        progressBarEditDebt.setVisibility(View.VISIBLE);
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBarEditDebt, "progress", 0, 35);
+        animation.setDuration(1000); // 3.5 second
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
     }
 
     private void setToggleButtonListeners() {
@@ -167,7 +188,9 @@ public class EditDebtsActivity  extends Activity{
                     debtNum.setText(Float.toString(Float.parseFloat(debtNum.getText().toString()) * -1));
                 } //Controllo se si registra un debito o un credito
                 new AsyncConnection().execute();
-                addNewTransaction(firstSelectedButton.getText().toString(), secondSelectedButton.getText().toString(), Float.parseFloat(debtNum.getText().toString()));
+                Long tsLong = System.currentTimeMillis()/1000;
+                String ts = tsLong.toString();
+                addNewTransaction(firstSelectedButton.getText().toString(), secondSelectedButton.getText().toString(), Float.parseFloat(debtNum.getText().toString()), ts);
             }
         });
 
@@ -185,7 +208,16 @@ public class EditDebtsActivity  extends Activity{
         });
     }
 
-    private void addNewTransaction(String user, String receiver, Float debtAmount) {
+    public static CharSequence createDate(String timestamp) {
+        long ts = Long.parseLong(timestamp);
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(ts);
+        Date d = c.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return sdf.format(d);
+    }
+
+    private void addNewTransaction(String user, String receiver, Float debtAmount, String timeStamp) {
         View footerView =  ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.debts_list_item, transactionLV, false);
         transactionLV.addFooterView(footerView);
         RelativeLayout footerColorLayout1 = (RelativeLayout) footerView.findViewById(R.id.colorLayout1);
@@ -193,6 +225,8 @@ public class EditDebtsActivity  extends Activity{
         TextView footerReceiverTV = (TextView) footerView.findViewById(R.id.receiverTextView);
         TextView footerDebtAmountTV = (TextView) footerView.findViewById(R.id.debtAmountTextView);
         TextView footerEuroTV = (TextView) footerView.findViewById(R.id.euroTV);
+        TextView footerTimeStamp = (TextView) footerView.findViewById(R.id.timestampTV);
+        footerTimeStamp.setText(createDate(timeStamp));
         footerUserTV.setText(user);
         footerReceiverTV.setText(receiver);
         footerDebtAmountTV.setText(Float.toString(Math.abs(debtAmount)));
@@ -225,6 +259,11 @@ public class EditDebtsActivity  extends Activity{
             json.put("user", firstSelectedButton.getTextOn());
             json.put("debt", debtNum.getText());
             json.put("receiver", secondSelectedButton.getTextOn());
+
+            long time = System.currentTimeMillis();
+            Timestamp tsTemp = new Timestamp(time);
+            String ts =  tsTemp.toString();
+            json.put("transactiontime", ts);
 
             JSONArray postjson=new JSONArray();
             postjson.put(json);
@@ -365,14 +404,25 @@ public class EditDebtsActivity  extends Activity{
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            try {
-                Log.v(LOG_TAG, "Setting up transactions list: ");
-                setupTransactionsList();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            ObjectAnimator animation = ObjectAnimator.ofInt(progressBarEditDebt, "progress", 35, 100);
+            animation.setDuration(500);
+            animation.setInterpolator(new DecelerateInterpolator());
+            animation.start();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressBarEditDebt.setVisibility(View.GONE);
+                    try {
+                        Log.v(LOG_TAG, "Setting up transactions list: ");
+                        setupTransactionsList();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 700);
         }
     }
 
@@ -411,14 +461,18 @@ public class EditDebtsActivity  extends Activity{
         usersArray = JSONDecoder.getTransactionUsersData(transactionData);
         receiversArray = JSONDecoder.getTransactionReceiversData(transactionData);
         debtAmountsArray = JSONDecoder.getTransactionDebtAmountsData(transactionData);
+        timeStampsArray = JSONDecoder.getTransactionDateStampsData(transactionData);
         transactionLV = (ListView) findViewById(R.id.transactionsListView);
-        transactionAdapter = new DebtListAdapter(this.getApplicationContext(), usersArray, receiversArray, debtAmountsArray);
+        transactionAdapter = new DebtListAdapter(this.getApplicationContext(), usersArray, receiversArray, debtAmountsArray, timeStampsArray);
         transactionLV.setAdapter(transactionAdapter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
         Runtime.getRuntime().gc();
     }
 }

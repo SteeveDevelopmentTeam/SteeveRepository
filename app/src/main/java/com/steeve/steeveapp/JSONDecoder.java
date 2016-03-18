@@ -90,6 +90,26 @@ class JSONDecoder {
         return debtAmountsArray;
     }
 
+    public static String [] getTransactionDateStampsData (String inputString) throws  JSONException {
+
+        //JSONParser parser = new JSONParser();
+        String s = inputString;
+        String [] dateStampsArray;
+        Integer transactionsCount;
+        JSONArray reader;
+
+        reader = new JSONArray(s);
+        transactionsCount = reader.length();
+        dateStampsArray = new String[transactionsCount];
+        for (Integer i=0; i<transactionsCount; i++) {
+            JSONObject obj2 = (JSONObject)reader.get(i);
+            String user = (String) obj2.get("time");
+            dateStampsArray[i] = user;
+        }
+
+        return dateStampsArray;
+    }
+
     public static Float [] getUserSummary(int userId, String dbDataSummary) throws JSONException {
         String s2 = dbDataSummary;
         JSONArray reader;

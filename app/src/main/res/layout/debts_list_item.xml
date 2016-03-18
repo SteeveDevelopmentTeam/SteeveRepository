@@ -4,10 +4,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@android:color/transparent"
+    android:background="@android:color/black"
     android:paddingBottom="5dp"
     android:paddingTop="5dp">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:id="@+id/mainDataContainer"
+    android:visibility="visible"
+    android:layout_marginLeft="50dp"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:layout_marginRight="40dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,8 +26,7 @@
         android:id="@+id/userTextView"
         android:layout_alignBottom="@+id/debtAmountTextView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,27 +38,17 @@
         android:id="@+id/receiverTextView"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="20dp" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ff00"
         android:textSize="20sp"
+        android:text="5"
         android:id="@+id/debtAmountTextView"
         android:layout_alignTop="@+id/receiverTextView"
         android:layout_centerHorizontal="true" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/userTextView"
-        android:id="@+id/colorLayout1">
-    </RelativeLayout>
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,4 +60,46 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/debtAmountTextView"
         android:layout_toEndOf="@+id/debtAmountTextView" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/colorLayout1"
+        android:layout_below="@+id/transaction_info_button">
+    </RelativeLayout>
+
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="3dp"
+        android:id="@+id/transaction_info_button"
+        android:src="@drawable/clipboard"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dateContainer"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="gone"
+        android:layout_marginLeft="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timestampTV"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 </RelativeLayout>

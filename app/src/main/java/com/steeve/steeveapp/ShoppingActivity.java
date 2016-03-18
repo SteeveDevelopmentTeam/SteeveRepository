@@ -1,13 +1,18 @@
 package com.steeve.steeveapp;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,18 +56,29 @@ public class ShoppingActivity extends Activity {
     private static Integer userID;
     private Float needAmount;
     private String [] tokenSet;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_layout);
         setupListeners();
+        setupProgressBar();
         shoppingTitleTV = (TextView) findViewById(R.id.shoppingTitle);
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "Righteous-Regular.ttf");
         shoppingTitleTV.setTypeface(myTypeface);
         askForID();
         new getTokenSetConnection().execute();
         Log.v(LOG_TAG, "Local need: " + need);
+    }
+
+    private void setupProgressBar() {
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 35);
+        animation.setDuration(1000); // 3.5 second
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
     }
 
     private void askForID() {
@@ -248,11 +264,22 @@ public class ShoppingActivity extends Activity {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            try {
-                populateShoppingData();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 35, 100);
+            animation.setDuration(500);
+            animation.setInterpolator(new DecelerateInterpolator());
+            animation.start();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.GONE);
+                    try {
+                        populateShoppingData();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 700);
         }
     }
 
@@ -285,6 +312,7 @@ public class ShoppingActivity extends Activity {
 
         @Override
         protected Object doInBackground(Object... arg0) {
+
             try {
                 getTokenSet();
             } catch (JSONException e) {
@@ -471,11 +499,27 @@ public class ShoppingActivity extends Activity {
             need = true;
             Log.v(LOG_TAG, "Colore mainAlertButton: VERDE");
         }
+        String needString = JSONDecoder.getUserShoppingData(userID, shoppingData)[1];
+        String needAmount = JSONDecoder.getUserShoppingData(userID, shoppingData)[2];
+        if (sharedPreferences.getString("need", null) == null) {
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("need", needString);
+            editor.putString("needAmount", needAmount);
+            editor.apply();
+        } else if ( !sharedPreferences.getString("need", null).equals(needString)) {
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("need", needString);
+            editor.putString("needAmount", needAmount);
+            editor.apply();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
         Runtime.getRuntime().gc();
     }
 }
