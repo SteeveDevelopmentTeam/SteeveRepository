@@ -6,16 +6,122 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".WelcomeActivity"
-    android:background="@drawable/home_wallpaper">
+    android:background="@drawable/main_wallpaper">
 
-        <Button
+        <ImageView
             android:id="@+id/welcomeButton"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@drawable/roundbutton"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:src="@drawable/steeve_logo2"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="S"
             android:textSize="100sp"
-            android:textColor="#000"/>
+            android:textColor="#ff0000"
+            android:visibility="visible"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/updateDialogLayout"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/cd_container_shape"
+        android:visibility="gone"
+        android:layout_above="@+id/textView15"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="And update has been found. Would you like to install it?"
+            android:textColor="@color/red"
+            android:id="@+id/textView4"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp" />
+
+        <RelativeLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:id="@+id/updateYesButton"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:id="@+id/updateNoButton"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/changeLogIV"
+                android:src="@drawable/clipboard"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:text="SteeveNet v1.1\n Made by potheads, for the same potheads."
+        android:gravity="center"
+        android:textSize="15sp"
+        android:id="@+id/textView15"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/welcomeButton"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/changeLogLayout"
+        android:layout_above="@+id/updateDialogLayout"
+        android:background="@drawable/cd_container_shape"
+        android:layout_margin="30dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Changelog"
+            android:textColor="@color/red"
+            android:textSize="18sp"
+            android:id="@+id/textView16"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            android:id="@+id/changeLogTV"
+            android:layout_below="@+id/textView16"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:padding="15dp" />
+    </RelativeLayout>
 </RelativeLayout>

@@ -20,7 +20,7 @@ import android.widget.TextView;
 /**
  * Created by Roman on 01/03/2016.
  */
-public class MainActivity extends Activity{
+public class MainActivity extends Activity {
 
     private static Integer loginCount;
     public SharedPreferences sharedPreferences;

@@ -33,12 +33,11 @@ class JSONDecoder {
     public static String [] getTransactionUsersData (String inputString) throws  JSONException {
 
         //JSONParser parser = new JSONParser();
-        String s = inputString;
         String [] userArray;
         Integer transactionsCount;
         JSONArray reader;
 
-        reader = new JSONArray(s);
+        reader = new JSONArray(inputString);
         transactionsCount = reader.length();
         userArray = new String[transactionsCount];
         for (Integer i=0; i<transactionsCount; i++) {
@@ -46,19 +45,17 @@ class JSONDecoder {
             String user = (String) obj2.get("user");
             userArray[i] = user;
         }
-
         return userArray;
     }
 
     public static String [] getTransactionReceiversData (String inputString) throws  JSONException {
 
         //JSONParser parser = new JSONParser();
-        String s = inputString;
         String [] receiverArray;
         Integer transactionsCount;
         JSONArray reader;
 
-        reader = new JSONArray(s);
+        reader = new JSONArray(inputString);
         transactionsCount = reader.length();
         receiverArray = new String[transactionsCount];
         for (Integer i=0; i<transactionsCount; i++) {
@@ -66,19 +63,17 @@ class JSONDecoder {
             String user = (String) obj2.get("receiver");
             receiverArray[i] = user;
         }
-
         return receiverArray;
     }
 
     public static String [] getTransactionDebtAmountsData (String inputString) throws  JSONException {
 
         //JSONParser parser = new JSONParser();
-        String s = inputString;
         String [] debtAmountsArray;
         Integer transactionsCount;
         JSONArray reader;
 
-        reader = new JSONArray(s);
+        reader = new JSONArray(inputString);
         transactionsCount = reader.length();
         debtAmountsArray = new String[transactionsCount];
         for (Integer i=0; i<transactionsCount; i++) {
@@ -86,19 +81,17 @@ class JSONDecoder {
             String user = (String) obj2.get("debtAmount");
             debtAmountsArray[i] = user;
         }
-
         return debtAmountsArray;
     }
 
     public static String [] getTransactionDateStampsData (String inputString) throws  JSONException {
 
         //JSONParser parser = new JSONParser();
-        String s = inputString;
         String [] dateStampsArray;
         Integer transactionsCount;
         JSONArray reader;
 
-        reader = new JSONArray(s);
+        reader = new JSONArray(inputString);
         transactionsCount = reader.length();
         dateStampsArray = new String[transactionsCount];
         for (Integer i=0; i<transactionsCount; i++) {
@@ -106,15 +99,13 @@ class JSONDecoder {
             String user = (String) obj2.get("time");
             dateStampsArray[i] = user;
         }
-
         return dateStampsArray;
     }
 
     public static Float [] getUserSummary(int userId, String dbDataSummary) throws JSONException {
-        String s2 = dbDataSummary;
         JSONArray reader;
 
-        reader = new JSONArray(s2);
+        reader = new JSONArray(dbDataSummary);
         String s3 = reader.toString();
         Log.v("Parsed SummaryJSON", "Parsed string: " + s3);
         JSONObject obj2 = (JSONObject) reader.get(userId);
@@ -122,34 +113,30 @@ class JSONDecoder {
         Float rimoAmount =  Float.parseFloat((String) obj2.get("Rimo"));
         Float neriAmount =  Float.parseFloat((String) obj2.get("Neri"));
         Float romanAmount = Float.parseFloat((String) obj2.get("Roman"));
-        Float [] debtSummary = new Float[]{pandoAmount, rimoAmount, neriAmount, romanAmount};
-        return debtSummary;
+        return new Float[]{pandoAmount, rimoAmount, neriAmount, romanAmount};
     }
 
     public static String[] getUserShoppingData(int userId, String dbShoppingData) throws JSONException {
-        String s2 = dbShoppingData;
         JSONArray reader;
 
-        reader = new JSONArray(s2);
+        reader = new JSONArray(dbShoppingData);
         String s3 = reader.toString();
         Log.v("Parsed shopping data", "Parsed string: " + s3);
         JSONObject obj2 = (JSONObject) reader.get(userId);
         String user = (String) obj2.get("User");
         String need = (String) obj2.get("Need");
         String amount = (String) obj2.get("Amount");
-        String[] shoppingData = new String[]{user, need, amount};
-        return shoppingData;
+        return new String[]{user, need, amount};
     }
 
     public static String[] getTokenSet( String retrievedTokenSetString) throws JSONException {
 
             //JSONParser parser = new JSONParser();
-            String s = retrievedTokenSetString;
-            String [] tokenSet;
+        String [] tokenSet;
             Integer tokenCount;
             JSONArray reader;
 
-            reader = new JSONArray(s);
+            reader = new JSONArray(retrievedTokenSetString);
             tokenCount = reader.length();
             tokenSet = new String[tokenCount];
             for (Integer i=0; i<tokenCount; i++) {
@@ -159,4 +146,17 @@ class JSONDecoder {
             }
             return tokenSet;
         }
+
+    public static String [] getRemoteApkVersion ( String retrievedVersionCodeString) throws JSONException {
+        String remoteVersionCode;
+        String changeLogText;
+        JSONArray reader;
+
+        reader = new JSONArray(retrievedVersionCodeString);
+        JSONObject obj2 = (JSONObject)reader.get(0);
+        remoteVersionCode = (String) obj2.get("version_code");
+        changeLogText = (String) obj2.get("changelog");
+
+        return new String [] {remoteVersionCode, changeLogText};
+    }
 }

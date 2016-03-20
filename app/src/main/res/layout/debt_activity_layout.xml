@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wp4"
+    android:background="@drawable/main_wallpaper"
     android:id="@+id/debtMainLayout">
 
 <RelativeLayout
@@ -325,9 +325,9 @@
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/dollar"
+        android:src="@drawable/dollar_icon2"
         android:background="@drawable/roundbutton"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:id="@+id/debtsEditButton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />

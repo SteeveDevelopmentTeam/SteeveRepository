@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +19,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class WelcomeActivity extends AppCompatActivity {
     private String LOG_TAG= "WelcomeActivity";
@@ -27,14 +54,25 @@ public class WelcomeActivity extends AppCompatActivity {
     private GCMBroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private StringBuilder builder = new StringBuilder();
+    private String remoteApkVersion;
+    private int localVersionCode;
+    private String path, remoteApkPath;
+    private ImageView welcomeButton;
+    private RelativeLayout changeLogLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isReceiverRegistered = false;
         setContentView(R.layout.welcome_screen);
+        checkForUpdates();
         setButtonListener();
         setupUserPreferences();
+    }
+
+    private void checkForUpdates() {
+        new CheckForUpdatesAsync().execute();
     }
 
     @Override
@@ -145,7 +183,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void setButtonListener() {
-        Button welcomeButton = (Button) findViewById(R.id.welcomeButton);
+        welcomeButton = (ImageView) findViewById(R.id.welcomeButton);
         welcomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +192,165 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(openMainIntent);
             }
         });
+    }
+
+
+    public class CheckForUpdatesAsync extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object... arg0) {
+            getDbApkVersion();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
+    }
+
+    private void getDbApkVersion() {
+        builder = new StringBuilder();
+        HttpClient client = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet("http://steeve.altervista.org/AutoUpdateAPK/get_apk_version.php");
+        try {
+            HttpResponse response = client.execute(httpGet);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
+            } else {
+                Log.v(LOG_TAG, "Failed to download file");
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        remoteApkVersion = builder.toString();
+        checkLocalVersion();
+    }
+
+    private void checkLocalVersion() {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        localVersionCode = packageInfo.versionCode;
+        Log.v(LOG_TAG, "Local apk version: " + localVersionCode);
+        getApkUpdate();
+    }
+
+    private void getApkUpdate() {
+        try {
+            if (!Integer.toString(localVersionCode).equals(JSONDecoder.getRemoteApkVersion(remoteApkVersion))) {
+                Log.v(LOG_TAG, "Found updated version of APK!");
+                final RelativeLayout updateDialogLayout = (RelativeLayout) findViewById(R.id.updateDialogLayout);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateDialogLayout.setVisibility(View.VISIBLE);
+                    }
+                });
+                Button yesButton = (Button) findViewById(R.id.updateYesButton);
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new UpdateAppAsync().execute();
+                        Log.v(LOG_TAG, "Update procedure started");
+                        updateDialogLayout.setVisibility(View.GONE);
+                    }
+                });
+
+                Button noButton = (Button) findViewById(R.id.updateNoButton);
+                noButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateDialogLayout.setVisibility(View.GONE);
+                    }
+                });
+            }
+
+            ImageView changeLogIV = (ImageView) findViewById(R.id.changeLogIV);
+            changeLogIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (welcomeButton.getVisibility() == View.VISIBLE) {
+                        welcomeButton.setVisibility(View.GONE);
+                        changeLogLayout = (RelativeLayout) findViewById(R.id.changeLogLayout);
+                        changeLogLayout.setVisibility(View.VISIBLE);
+                        TextView changeLogTV = (TextView) findViewById(R.id.changeLogTV);
+                        try {
+                            changeLogTV.setText(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[1]);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        welcomeButton.setVisibility(View.VISIBLE);
+                        changeLogLayout.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class UpdateAppAsync extends AsyncTask {
+
+        @Override
+        protected String doInBackground(Object[] params) {
+            path = "/sdcard/SteeveAppUpdateAPK.apk";
+            remoteApkPath = "http://steeve.altervista.org/AutoUpdateAPK/app-debug.apk";
+            try {
+                URL url = new URL(remoteApkPath);
+                URLConnection connection = url.openConnection();
+                connection.connect();
+
+                int fileLength = connection.getContentLength();
+
+                // download the file
+                InputStream input = new BufferedInputStream(url.openStream());
+                OutputStream output = new FileOutputStream(path);
+
+                byte data[] = new byte[1024];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    publishProgress((int) (total * 100 / fileLength));
+                    output.write(data, 0, count);
+                }
+
+                output.flush();
+                output.close();
+                input.close();
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Well that didn't work out so well...");
+                Log.e(LOG_TAG, e.getMessage());
+            }
+            return path;
+        }
+
+        // begin the installation by opening the resulting file
+        @Override
+        protected void onPostExecute(Object o) {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_VIEW);
+            i.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
+            Log.v(LOG_TAG, "About to install new .apk");
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(i);
+        }
     }
 
 

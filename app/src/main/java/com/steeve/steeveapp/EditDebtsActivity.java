@@ -144,6 +144,19 @@ public class EditDebtsActivity  extends Activity{
             }
         });
 
+        tbN1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    tbN2.setVisibility(View.INVISIBLE);
+                    firstSelectedButton = tbN1;
+                } else { tbN2.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+
+
         tbRo1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -156,17 +169,6 @@ public class EditDebtsActivity  extends Activity{
             }
         });
 
-        tbN1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    tbN2.setVisibility(View.INVISIBLE);
-                    firstSelectedButton = tbN1;
-                } else { tbN2.setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
 
         editDebtsTickButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,8 +327,9 @@ public class EditDebtsActivity  extends Activity{
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             //Resetto la pagina per permettere un'altra transazione immediata
+            RelativeLayout editDebtsLayout = (RelativeLayout) findViewById(R.id.editDebtsLayout);
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            imm.hideSoftInputFromWindow(editDebtsLayout.getWindowToken(), 0);
             Toast.makeText(getApplicationContext(), "Transaction recorded!", Toast.LENGTH_SHORT).show();
             debtNum.setText(null);
             if (DCswitch.isChecked()) { DCswitch.setChecked(false); }

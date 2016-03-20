@@ -1,11 +1,5 @@
 
- - Auto update (See bookmarks on Chrome)
-
  - Possibile miglioramento di JSONDecoder , provare a separare scaricamento dati e funzioni di popolamento in Shopping activity
-
- - General fonts
-
- - RatingBar custom background
 
  - Fix back navigation from EditDebtsActivity
 

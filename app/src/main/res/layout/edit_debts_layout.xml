@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wp3">
+    android:id="@+id/editDebtsLayout"
+    android:background="@drawable/main_wallpaper">
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,6 +24,9 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/custom_toggle_button_selector"
+        android:textColor="@color/white"
         android:textOn="Pando"
         android:textOff="Pando"
         android:text="New ToggleButton"
@@ -31,6 +37,10 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/custom_toggle_button_selector"
+        android:textColor="@color/white"
         android:textOn="Rimo"
         android:textOff="Rimo"
         android:id="@+id/toggleButtonRi1"
@@ -41,6 +51,10 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/custom_toggle_button_selector"
+        android:textColor="@color/white"
         android:textOn="Roman"
         android:textOff="Roman"
         android:text="New ToggleButton"
@@ -52,6 +66,9 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/custom_toggle_button_selector"
+        android:textColor="@color/white"
         android:textOn="Neri"
         android:textOff="Neri"
         android:text="New ToggleButton"
@@ -63,6 +80,9 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/custom_toggle_button_selector"
+        android:textColor="@color/white"
         android:textOn="Pando"
         android:textOff="Pando"
         android:text="New ToggleButton"
@@ -73,6 +93,10 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/custom_toggle_button_selector"
+        android:textColor="@color/white"
         android:textOn="Rimo"
         android:textOff="Rimo"
         android:text="New ToggleButton"
@@ -84,6 +108,10 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/custom_toggle_button_selector"
+        android:textColor="@color/white"
         android:textOn="Roman"
         android:textOff="Roman"
         android:text="New ToggleButton"
@@ -95,6 +123,10 @@
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/custom_toggle_button_selector"
+        android:textColor="@color/white"
         android:textOn="Neri"
         android:textOff="Neri"
         android:text="New ToggleButton"

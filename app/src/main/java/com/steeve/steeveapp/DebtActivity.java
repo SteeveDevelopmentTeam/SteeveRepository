@@ -67,7 +67,7 @@ public class DebtActivity extends Activity{
         setupProgressBar();
         //progress = ProgressDialog.show(this, "Loading", "", true);
         debtActivityTitleTV = (TextView) findViewById(R.id.debtActivityTitle);
-        Typeface myTypeface = Typeface.createFromAsset(getAssets(), "Righteous-Regular.ttf");
+        Typeface myTypeface = Typeface.createFromAsset(getAssets(), "AllertaStencil-Regular.ttf");
         debtActivityTitleTV.setTypeface(myTypeface);
         }
 

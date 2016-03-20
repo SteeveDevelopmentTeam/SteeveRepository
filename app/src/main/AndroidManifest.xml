@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.steeve.steeveapp">
+    package="com.steeve.steeveapp"
+    android:versionCode="2"
+    android:versionName="1.1">
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/steeve_app_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -72,5 +74,6 @@
     <permission android:name="com.steeve.steeveapp.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="com.steeve.steeveapp.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>

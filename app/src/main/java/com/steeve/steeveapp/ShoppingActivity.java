@@ -49,7 +49,6 @@ public class ShoppingActivity extends Activity {
     private ImageView riStatusButton;
     private ImageView nStatusButton;
     private ImageView roStatusButton;
-    private static boolean firstExecution = true;
     private static String userName, token, retrievedTokenSetString;
     private static boolean need;
     private static ImageView personalStatus;
@@ -65,7 +64,7 @@ public class ShoppingActivity extends Activity {
         setupListeners();
         setupProgressBar();
         shoppingTitleTV = (TextView) findViewById(R.id.shoppingTitle);
-        Typeface myTypeface = Typeface.createFromAsset(getAssets(), "Righteous-Regular.ttf");
+        Typeface myTypeface = Typeface.createFromAsset(getAssets(), "AllertaStencil-Regular.ttf");
         shoppingTitleTV.setTypeface(myTypeface);
         askForID();
         new getTokenSetConnection().execute();
@@ -138,7 +137,6 @@ public class ShoppingActivity extends Activity {
                                 ratingLayout.setVisibility(View.GONE);
                                 new UpdateConnection().execute();
                                 new SendAsyncMessage().execute();
-
                             }
                         }
                     });
