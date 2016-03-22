@@ -9,30 +9,9 @@ import org.json.JSONObject;
 
 class JSONDecoder {
 
-    /*public static String [] getTransactionsData(String inputString, Integer position) throws  JSONException {
-
-        //JSONParser parser = new JSONParser();
-        String s = inputString;
-        Object obj = null;
-
-        try {
-            obj = parser.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        JSONArray array = (JSONArray) obj;
-        JSONObject obj2 = (JSONObject)array.get(position);
-        String user = (String) obj2.get("user");
-        String debtAmount = (String) obj2.get("debtAmount");
-        String receiver = (String) obj2.get("receiver");
-        String [] transactionData = new String[] {user, debtAmount, receiver};
-        return transactionData;
-    }*/
 
     public static String [] getTransactionUsersData (String inputString) throws  JSONException {
 
-        //JSONParser parser = new JSONParser();
         String [] userArray;
         Integer transactionsCount;
         JSONArray reader;
@@ -50,7 +29,6 @@ class JSONDecoder {
 
     public static String [] getTransactionReceiversData (String inputString) throws  JSONException {
 
-        //JSONParser parser = new JSONParser();
         String [] receiverArray;
         Integer transactionsCount;
         JSONArray reader;
@@ -68,7 +46,6 @@ class JSONDecoder {
 
     public static String [] getTransactionDebtAmountsData (String inputString) throws  JSONException {
 
-        //JSONParser parser = new JSONParser();
         String [] debtAmountsArray;
         Integer transactionsCount;
         JSONArray reader;
@@ -86,7 +63,6 @@ class JSONDecoder {
 
     public static String [] getTransactionDateStampsData (String inputString) throws  JSONException {
 
-        //JSONParser parser = new JSONParser();
         String [] dateStampsArray;
         Integer transactionsCount;
         JSONArray reader;
@@ -131,32 +107,52 @@ class JSONDecoder {
 
     public static String[] getTokenSet( String retrievedTokenSetString) throws JSONException {
 
-            //JSONParser parser = new JSONParser();
         String [] tokenSet;
-            Integer tokenCount;
-            JSONArray reader;
+        Integer tokenCount;
+        JSONArray reader;
 
-            reader = new JSONArray(retrievedTokenSetString);
-            tokenCount = reader.length();
-            tokenSet = new String[tokenCount];
-            for (Integer i=0; i<tokenCount; i++) {
-                JSONObject obj2 = (JSONObject)reader.get(i);
-                String token = (String) obj2.get("RegID");
-                tokenSet[i] = token;
-            }
-            return tokenSet;
+        reader = new JSONArray(retrievedTokenSetString);
+        tokenCount = reader.length();
+        tokenSet = new String[tokenCount];
+        for (Integer i=0; i<tokenCount; i++) {
+            JSONObject obj2 = (JSONObject)reader.get(i);
+            String token = (String) obj2.get("RegID");
+            tokenSet[i] = token;
         }
+        return tokenSet;
+        }
+
+    public static String getUserToken(String target, String retrievedTokenSetString) throws JSONException {
+
+        JSONArray reader;
+        reader = new JSONArray(retrievedTokenSetString);
+        String token = null;
+        String user;
+
+        for (int i=0; i<4; i++) {
+            JSONObject obj2 = (JSONObject) reader.get(i);
+            user = (String) obj2.get("User");
+            if (user.equals(target)) {
+                token = (String) obj2.get("RegID");
+                return token;
+            } else { }
+        }
+        Log.v("JSONDecoder", "Target not found or not registered.");
+        return null;
+    }
 
     public static String [] getRemoteApkVersion ( String retrievedVersionCodeString) throws JSONException {
         String remoteVersionCode;
         String changeLogText;
+        String apkSize;
         JSONArray reader;
 
         reader = new JSONArray(retrievedVersionCodeString);
         JSONObject obj2 = (JSONObject)reader.get(0);
         remoteVersionCode = (String) obj2.get("version_code");
         changeLogText = (String) obj2.get("changelog");
+        apkSize = (String) obj2.get("apk_size");
 
-        return new String [] {remoteVersionCode, changeLogText};
+        return new String [] {remoteVersionCode, changeLogText, apkSize};
     }
 }

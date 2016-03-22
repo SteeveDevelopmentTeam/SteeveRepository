@@ -389,11 +389,11 @@ public class ShoppingActivity extends Activity {
         JSONObject json = new JSONObject();
 
         try {
-            // JSON data:
-            JSONArray JSONTokenArray = new JSONArray(Arrays.asList(tokenSet));
+
+            //JSONArray JSONTokenArray = new JSONArray(Arrays.asList(tokenSet));
             JSONArray JSONShoppingArray = new JSONArray(shoppingData);
-            json.put("regId", JSONTokenArray);
-            json.put("message", JSONShoppingArray);
+            json.put("to", "/topics/global");
+            json.put("data", JSONShoppingArray);
 
 
             JSONArray postjson = new JSONArray();

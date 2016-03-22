@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -60,6 +62,8 @@ public class WelcomeActivity extends AppCompatActivity {
     private String path, remoteApkPath;
     private ImageView welcomeButton;
     private RelativeLayout changeLogLayout;
+    private ProgressBar downloadProgressBar;
+    private TextView downloadProgressPercentageTV, downloadInformationsTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +187,9 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void setButtonListener() {
+        downloadProgressBar = (ProgressBar) findViewById(R.id.downloadProgressBar);
+        downloadProgressPercentageTV = (TextView) findViewById(R.id.downloadProgressPercentageTV);
+        downloadInformationsTV = (TextView) findViewById(R.id.downloadInformationsTV);
         welcomeButton = (ImageView) findViewById(R.id.welcomeButton);
         welcomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,7 +258,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void getApkUpdate() {
         try {
-            if (!Integer.toString(localVersionCode).equals(JSONDecoder.getRemoteApkVersion(remoteApkVersion))) {
+            if (!Integer.toString(localVersionCode).equals(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0])) {
                 Log.v(LOG_TAG, "Found updated version of APK!");
                 final RelativeLayout updateDialogLayout = (RelativeLayout) findViewById(R.id.updateDialogLayout);
                 runOnUiThread(new Runnable() {
@@ -267,6 +274,8 @@ public class WelcomeActivity extends AppCompatActivity {
                         new UpdateAppAsync().execute();
                         Log.v(LOG_TAG, "Update procedure started");
                         updateDialogLayout.setVisibility(View.GONE);
+                        downloadProgressBar.setVisibility(View.VISIBLE);
+                        downloadInformationsTV.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -309,14 +318,15 @@ public class WelcomeActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Object[] params) {
-            path = "/sdcard/SteeveAppUpdateAPK.apk";
+            path = Environment.getExternalStorageDirectory().getPath()+"/SteeveAppUpdateAPK.apk";
             remoteApkPath = "http://steeve.altervista.org/AutoUpdateAPK/app-debug.apk";
             try {
                 URL url = new URL(remoteApkPath);
                 URLConnection connection = url.openConnection();
                 connection.connect();
 
-                int fileLength = connection.getContentLength();
+                long fileLength = Long.parseLong(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[2]);
+                Log.v(LOG_TAG, "File lenght: "+ fileLength);
 
                 // download the file
                 InputStream input = new BufferedInputStream(url.openStream());
@@ -340,6 +350,15 @@ public class WelcomeActivity extends AppCompatActivity {
             }
             return path;
         }
+
+        @Override
+        protected void onProgressUpdate(Object[] progress) {
+            downloadProgressBar.setProgress((int) progress[0]);
+            if ((int)progress[0]<=100)
+            downloadProgressPercentageTV.setText(progress[0]+"%");
+            super.onProgressUpdate(progress);
+        }
+
 
         // begin the installation by opening the resulting file
         @Override

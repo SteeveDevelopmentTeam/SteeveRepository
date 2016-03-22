@@ -1,5 +1,18 @@
-
- - Possibile miglioramento di JSONDecoder , provare a separare scaricamento dati e funzioni di popolamento in Shopping activity
+PRESENT:
 
  - Fix back navigation from EditDebtsActivity
+
+ - download update with download speed
+
+
+FUTURE:
+ - Possibile miglioramento di JSONDecoder , provare a separare scaricamento dati e funzioni di popolamento in Shopping activity
+
+ - General custom toasts
+
+ - Custom notification sound mp3 synth generator
+
+ - LetMeIn widget
+
+ - Audio generator
 

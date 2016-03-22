@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_wallpaper">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
+
+        <ToggleButton
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Pando"
+            android:textOff="Pando"
+            android:id="@+id/pOpenButton"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/riOpenButton"
+            android:layout_toStartOf="@+id/riOpenButton"
+            android:layout_marginRight="2dp" />
+
+        <ToggleButton
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Rimo"
+            android:textOff="Rimo"
+            android:id="@+id/riOpenButton"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/nOpenButton"
+            android:layout_toStartOf="@+id/nOpenButton"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp" />
+
+        <ToggleButton
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Neri"
+            android:textOff="Neri"
+            android:id="@+id/nOpenButton"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/roOpenButton"
+            android:layout_toStartOf="@+id/roOpenButton"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp" />
+
+        <ToggleButton
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Roman"
+            android:textOff="Roman"
+            android:id="@+id/roOpenButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="2dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:id="@+id/doorIV"
+        android:src="@drawable/closed_door"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Let me in"
+        android:textColor="@color/red"
+        android:textSize="40sp"
+        android:id="@+id/letMeInTitle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+</RelativeLayout>
