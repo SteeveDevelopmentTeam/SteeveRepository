@@ -47,6 +47,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 
 public class WelcomeActivity extends AppCompatActivity {
     private String LOG_TAG= "WelcomeActivity";
@@ -297,8 +298,25 @@ public class WelcomeActivity extends AppCompatActivity {
                         changeLogLayout = (RelativeLayout) findViewById(R.id.changeLogLayout);
                         changeLogLayout.setVisibility(View.VISIBLE);
                         TextView changeLogTV = (TextView) findViewById(R.id.changeLogTV);
+                        TextView apkSizeTV = (TextView) findViewById(R.id.apkSizeTV);
                         try {
                             changeLogTV.setText(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[1]);
+                            int apkSize = (Integer.parseInt(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[2]));
+                            String apkSizeString;
+                            DecimalFormat dec = new DecimalFormat("0.00");
+                            double m = apkSize/1024000.0;
+                            double g = apkSize/1048576000.0;
+                            double t = apkSize/1073741824000.0;
+                            if (t > 1) {
+                                apkSizeString = dec.format(t).concat("TB");
+                            } else if (g > 1) {
+                                apkSizeString = dec.format(g).concat("GB");
+                            } else if (m > 1) {
+                                apkSizeString = dec.format(m).concat("MB");
+                            } else {
+                                apkSizeString = dec.format(apkSize).concat("KB");
+                            }
+                            apkSizeTV.setText(apkSizeString);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

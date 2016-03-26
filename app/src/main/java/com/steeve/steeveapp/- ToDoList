@@ -2,8 +2,13 @@ PRESENT:
 
  - Fix back navigation from EditDebtsActivity
 
- - download update with download speed
+ - Download update with download speed
 
+ - Corrupted apk after download
+
+ - Usage guide
+
+ - Debt entry description in transactions list
 
 FUTURE:
  - Possibile miglioramento di JSONDecoder , provare a separare scaricamento dati e funzioni di popolamento in Shopping activity
@@ -12,7 +17,6 @@ FUTURE:
 
  - Custom notification sound mp3 synth generator
 
- - LetMeIn widget
-
  - Audio generator
+
 

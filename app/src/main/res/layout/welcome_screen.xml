@@ -115,14 +115,24 @@
             android:textColor="@color/red"
             android:textSize="15sp"
             android:id="@+id/changeLogTV"
-            android:layout_below="@+id/textView16"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:padding="15dp" />
+            android:padding="15dp"
+            android:layout_below="@+id/apkSizeTV" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:id="@+id/apkSizeTV"
+            android:layout_below="@+id/textView16"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
     </RelativeLayout>
     <ProgressBar
         android:id="@+id/downloadProgressBar"

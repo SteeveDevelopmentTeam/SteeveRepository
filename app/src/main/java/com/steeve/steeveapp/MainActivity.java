@@ -116,8 +116,8 @@ public class MainActivity extends Activity {
     }
 
     private void setupList() {
-        listImages = new int[]{R.drawable.dollar_icon2, R.drawable.shopping_icon2, R.drawable.door_icon};
-        listTexts = new String[]{"Gimme money", "Shopping", "Doorbell"};
+        listImages = new int[]{R.drawable.dollar_icon2, R.drawable.shopping_icon2, R.drawable.door_icon, android.R.drawable.arrow_up_float};
+        listTexts = new String[]{"Gimme money", "Shopping", "Doorbell", "Settings"};
         actionList= (ListView) findViewById(R.id.drawer_list);
         inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View listHeaderLogo = getLayoutInflater().inflate(R.layout.list_header_logo_layout, null);
@@ -169,6 +169,10 @@ public class MainActivity extends Activity {
                             case 2:
                                 Intent letMeInIntent = new Intent(context, LetMeInActivity.class);
                                 startActivityForResult(letMeInIntent, 1);
+                                break;
+                            case 3:
+                                Intent settingsIntent = new Intent(context, SettingsActivity.class);
+                                startActivityForResult(settingsIntent, 1);
                                 break;
                         }
                     }

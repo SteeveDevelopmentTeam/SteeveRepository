@@ -21,8 +21,27 @@
                 <category android:name="com.steeve.steeveapp" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".MyWidgetProvider"
+            android:icon="@drawable/steeve_app_icon"
+            android:label="Doorbell">
+            <intent-filter >
+                <action
+                    android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/custom_widget_info"/>
+        </receiver>
         <service
             android:name=".MyGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".NotificationService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -70,6 +89,12 @@
         </activity>
         <activity
             android:name=".LetMeInActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">
