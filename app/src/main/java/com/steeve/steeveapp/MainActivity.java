@@ -172,7 +172,7 @@ public class MainActivity extends Activity {
                                 break;
                             case 3:
                                 Intent settingsIntent = new Intent(context, SettingsActivity.class);
-                                startActivityForResult(settingsIntent, 1);
+                                startActivity(settingsIntent);
                                 break;
                         }
                     }

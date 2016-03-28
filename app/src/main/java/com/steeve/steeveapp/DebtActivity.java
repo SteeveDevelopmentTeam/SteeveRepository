@@ -676,6 +676,5 @@ public class DebtActivity extends Activity{
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
-        Runtime.getRuntime().gc();
     }
 }

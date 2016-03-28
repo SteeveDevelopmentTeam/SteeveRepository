@@ -19,20 +19,23 @@ import java.util.Locale;
 
 public class DebtListAdapter extends BaseAdapter {
     private String LOG_TAG = "DebtListAdapterLOG";
-    Context adapterContext;
-    String [] usersList;
-    String [] receiversList;
-    String [] debtAmountsList;
-    String [] dateList;
-    private static LayoutInflater inflater=null;
+    private Context adapterContext;
+    private String [] usersList;
+    private String [] receiversList;
+    private String [] debtAmountsList;
+    private String [] dateList;
+    private String [] descriptionsList;
+    private static LayoutInflater inflater = null;
+    private boolean isDescriptionShowing = false;
 
 
-    public DebtListAdapter (Context context, String[] dbUsersList, String[] dbReceiversList, String[] dbDebtsAmountList, String [] dbDateList) {
+    public DebtListAdapter (Context context, String[] dbUsersList, String[] dbReceiversList, String[] dbDebtsAmountList, String [] dbDateList, String [] dbDescriptionsList) {
         adapterContext = context;
         usersList = dbUsersList;
         receiversList = dbReceiversList;
         debtAmountsList = dbDebtsAmountList;
         dateList = dbDateList;
+        descriptionsList = dbDescriptionsList;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -58,7 +61,7 @@ public class DebtListAdapter extends BaseAdapter {
         TextView euroTV;
         TextView timeStampTV;
         RelativeLayout colorLayout1, mainDataContainer, dateContainer;
-        ImageView infoButton;
+        ImageView infoButton, transactionDescriptionIV;
     }
 
     /*public static CharSequence createDate(String timestamp) {
@@ -88,6 +91,7 @@ public class DebtListAdapter extends BaseAdapter {
         holder.timeStampTV = (TextView) rowView.findViewById(R.id.timestampTV);
         holder.timeStampTV.setText(formattedDate(dateList[position]).toString());
         holder.infoButton = (ImageView) rowView.findViewById(R.id.transaction_info_button);
+        holder.transactionDescriptionIV = (ImageView) rowView.findViewById(R.id.transactionDescriptionIV);
         if (Float.parseFloat(debtAmountsList[position])<0) { isCredit = true;  }
         holder.debtAmountTV.setText(Float.toString(Math.abs(Float.parseFloat(debtAmountsList[position]))));
         holder.receiverTV.setText(receiversList[position]);
@@ -112,6 +116,15 @@ public class DebtListAdapter extends BaseAdapter {
                 if (holder.mainDataContainer.getVisibility() == View.VISIBLE) {
                     holder.mainDataContainer.setVisibility(View.GONE);
                     holder.dateContainer.setVisibility(View.VISIBLE);
+                    holder.transactionDescriptionIV.setOnClickListener(new View.OnClickListener() { //Per mostrare la descrizione della transazione
+                        @Override
+                        public void onClick(View v) {
+                            if (!isDescriptionShowing) {
+                                holder.timeStampTV.setText(descriptionsList[position]);
+                                isDescriptionShowing = true;
+                            } else { holder.timeStampTV.setText(formattedDate(dateList[position]).toString());  isDescriptionShowing = false; }
+                        }
+                    });
                 } else {
                     holder.mainDataContainer.setVisibility(View.VISIBLE);
                     holder.dateContainer.setVisibility(View.GONE);

@@ -135,17 +135,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <EditText
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:hint="€"
-        android:textColorHint="@android:color/holo_red_dark"
-        android:textColor="#ff00"
-        android:id="@+id/moneyNumEditText"
-        android:layout_below="@+id/toggleButtonRi1"
-        android:layout_centerHorizontal="true" />
 
         <ImageButton
             android:layout_width="50dp"
@@ -154,21 +143,41 @@
             android:background="@android:color/transparent"
             android:id="@+id/editDebtsTickButton"
             android:src="@drawable/tick"
-            android:layout_below="@+id/moneyNumEditText"
+            android:layout_below="@+id/toggleButtonRo2"
+            android:layout_centerHorizontal="true" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="200dp"
+            android:layout_alignRight="@+id/textView12"
+            android:layout_alignEnd="@+id/textView12"
+            android:layout_above="@+id/toggleButtonN2"
+            android:layout_toEndOf="@+id/toggleButtonP1"
+            android:layout_alignLeft="@+id/textView12"
+            android:layout_alignStart="@+id/textView12">
+        <EditText
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:hint="€"
+            android:textColorHint="@android:color/holo_red_dark"
+            android:textColor="#ff00"
+            android:id="@+id/moneyNumEditText"
+            android:layout_below="@+id/CDswitch"
             android:layout_centerHorizontal="true" />
 
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:track="@drawable/switch_custom_track"
             android:thumb="@drawable/switch_custom_thumb"
             android:textOn="Credito"
             android:textOff="Debito"
             android:id="@+id/CDswitch"
-            android:layout_above="@+id/moneyNumEditText"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -180,7 +189,8 @@
             android:id="@+id/textView10"
             android:layout_alignTop="@+id/CDswitch"
             android:layout_toRightOf="@+id/CDswitch"
-            android:layout_toEndOf="@+id/CDswitch" />
+            android:layout_toEndOf="@+id/CDswitch"
+            android:layout_marginLeft="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -192,7 +202,22 @@
             android:id="@+id/textView11"
             android:layout_alignTop="@+id/CDswitch"
             android:layout_toLeftOf="@+id/CDswitch"
-            android:layout_toStartOf="@+id/CDswitch" />
+            android:layout_toStartOf="@+id/CDswitch"
+            android:layout_marginRight="5dp" />
+
+            <EditText
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/transactionDescriptionET"
+                android:hint="Description"
+                android:textColorHint="@android:color/holo_red_dark"
+                android:textColor="#ff00"
+                android:layout_below="@+id/moneyNumEditText"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
 
         <ListView
             android:layout_width="wrap_content"

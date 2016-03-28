@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -60,7 +61,7 @@ public class EditDebtsActivity  extends Activity{
     private ToggleButton tbRo2;
     private ToggleButton tbN2;
     private ImageButton editDebtsTickButton;
-    private EditText debtNum;
+    private EditText debtNumET, debtDescriptionET;
     private ToggleButton firstSelectedButton;
     private ToggleButton secondSelectedButton;
     private String LOG_TAG = "EditDebtsActivity LOG";
@@ -73,10 +74,12 @@ public class EditDebtsActivity  extends Activity{
     private String [] receiversArray;
     private String[] debtAmountsArray;
     private String [] timeStampsArray;
+    private String [] descriptionsArray;
     public static Context context;
     public DebtListAdapter transactionAdapter;
     private TextView editDebtsTitleTV;
     private ProgressBar progressBarEditDebt;
+    private boolean isFooterDescriptionShowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +118,8 @@ public class EditDebtsActivity  extends Activity{
         tbRo2 = (ToggleButton) findViewById(R.id.toggleButtonRo2);
         tbN2  = (ToggleButton) findViewById(R.id.toggleButtonN2);
         editDebtsTickButton = (ImageButton) findViewById(R.id.editDebtsTickButton);
-        debtNum = (EditText) findViewById(R.id.moneyNumEditText);
+        debtNumET = (EditText) findViewById(R.id.moneyNumEditText);
+        debtDescriptionET = (EditText) findViewById(R.id.transactionDescriptionET);
         firstSelectedButton = null;
         secondSelectedButton = null;
         DCswitch = (Switch) findViewById(R.id.CDswitch);
@@ -173,7 +177,7 @@ public class EditDebtsActivity  extends Activity{
         editDebtsTickButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (debtNum.getText() == null) {
+                if (debtNumET.getText() == null) {
                     Toast.makeText(getApplicationContext(), "Inserisci cifra", Toast.LENGTH_SHORT).show();
                 } else {
                     if (tbP2.isChecked()) {
@@ -187,12 +191,12 @@ public class EditDebtsActivity  extends Activity{
                     }
                 }
                 if (DCswitch.isChecked()) {
-                    debtNum.setText(Float.toString(Float.parseFloat(debtNum.getText().toString()) * -1));
+                    debtNumET.setText(Float.toString(Float.parseFloat(debtNumET.getText().toString()) * -1));
                 } //Controllo se si registra un debito o un credito
                 new AsyncConnection().execute();
-                Long tsLong = System.currentTimeMillis()/1000;
+                Long tsLong = System.currentTimeMillis();
                 String ts = tsLong.toString();
-                addNewTransaction(firstSelectedButton.getText().toString(), secondSelectedButton.getText().toString(), Float.parseFloat(debtNum.getText().toString()), ts);
+                addNewTransaction(firstSelectedButton.getText().toString(), secondSelectedButton.getText().toString(), Float.parseFloat(debtNumET.getText().toString()), ts, debtDescriptionET.getText().toString());
             }
         });
 
@@ -200,11 +204,11 @@ public class EditDebtsActivity  extends Activity{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (DCswitch.isChecked()) {
-                    debtNum.setTextColor(Color.parseColor("#00ff00"));
-                    debtNum.setHintTextColor(Color.parseColor("#00ff00"));
+                    debtNumET.setTextColor(Color.parseColor("#00ff00"));
+                    debtNumET.setHintTextColor(Color.parseColor("#00ff00"));
                 } else {
-                    debtNum.setTextColor(Color.parseColor("#ff0000"));
-                    debtNum.setHintTextColor(Color.parseColor("#ff0000"));
+                    debtNumET.setTextColor(Color.parseColor("#ff0000"));
+                    debtNumET.setHintTextColor(Color.parseColor("#ff0000"));
                 }
             }
         });
@@ -219,16 +223,45 @@ public class EditDebtsActivity  extends Activity{
         return sdf.format(d);
     }
 
-    private void addNewTransaction(String user, String receiver, Float debtAmount, String timeStamp) {
+    private void addNewTransaction(String user, String receiver, Float debtAmount, final String timeStamp, final String description) {
         View footerView =  ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.debts_list_item, transactionLV, false);
         transactionLV.addFooterView(footerView);
+        isFooterDescriptionShowing = false;
         RelativeLayout footerColorLayout1 = (RelativeLayout) footerView.findViewById(R.id.colorLayout1);
+        final RelativeLayout footerMainDataContainerLayout = (RelativeLayout) footerView.findViewById(R.id.mainDataContainer);
+        final RelativeLayout footerDateContainerLayout = (RelativeLayout) footerView.findViewById(R.id.dateContainer);
         TextView footerUserTV = (TextView) footerView.findViewById(R.id.userTextView);
         TextView footerReceiverTV = (TextView) footerView.findViewById(R.id.receiverTextView);
         TextView footerDebtAmountTV = (TextView) footerView.findViewById(R.id.debtAmountTextView);
         TextView footerEuroTV = (TextView) footerView.findViewById(R.id.euroTV);
-        TextView footerTimeStamp = (TextView) footerView.findViewById(R.id.timestampTV);
+        final TextView footerTimeStamp = (TextView) footerView.findViewById(R.id.timestampTV);
+        ImageView footerInfoButtonIV = (ImageView) footerView.findViewById(R.id.transaction_info_button);
+        ImageView footerTransactionDescriptionIV = (ImageView) footerView.findViewById(R.id.transactionDescriptionIV);
         footerTimeStamp.setText(createDate(timeStamp));
+        footerInfoButtonIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (footerMainDataContainerLayout.getVisibility() == View.VISIBLE) {
+                    footerMainDataContainerLayout.setVisibility(View.GONE);
+                    footerDateContainerLayout.setVisibility(View.VISIBLE);
+                } else {
+                    footerMainDataContainerLayout.setVisibility(View.VISIBLE);
+                    footerDateContainerLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+        footerTransactionDescriptionIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isFooterDescriptionShowing) {
+                    footerTimeStamp.setText(description);
+                    isFooterDescriptionShowing = true;
+                } else {
+                    footerTimeStamp.setText(createDate(timeStamp));
+                    isFooterDescriptionShowing = false;
+                }
+            }
+        });
         footerUserTV.setText(user);
         footerReceiverTV.setText(receiver);
         footerDebtAmountTV.setText(Float.toString(Math.abs(debtAmount)));
@@ -259,8 +292,11 @@ public class EditDebtsActivity  extends Activity{
         try {
             // JSON data:
             json.put("user", firstSelectedButton.getTextOn());
-            json.put("debt", debtNum.getText());
+            json.put("debt", debtNumET.getText());
             json.put("receiver", secondSelectedButton.getTextOn());
+            if (debtDescriptionET.getText() != null) {
+                json.put("description", debtDescriptionET.getText());
+            } else { json.put("description", null); }
 
             long time = System.currentTimeMillis();
             Timestamp tsTemp = new Timestamp(time);
@@ -331,7 +367,8 @@ public class EditDebtsActivity  extends Activity{
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editDebtsLayout.getWindowToken(), 0);
             Toast.makeText(getApplicationContext(), "Transaction recorded!", Toast.LENGTH_SHORT).show();
-            debtNum.setText(null);
+            debtNumET.setText(null);
+            debtDescriptionET.setText(null);
             if (DCswitch.isChecked()) { DCswitch.setChecked(false); }
             firstSelectedButton.setChecked(false);
             secondSelectedButton.setChecked(false);
@@ -349,7 +386,7 @@ public class EditDebtsActivity  extends Activity{
         try {
             // JSON data:
             json.put("user", firstSelectedButton.getTextOn());
-            json.put("debt", debtNum.getText());
+            json.put("debt", debtNumET.getText());
             json.put("receiver", secondSelectedButton.getTextOn());
 
             JSONArray postjson=new JSONArray();
@@ -465,8 +502,9 @@ public class EditDebtsActivity  extends Activity{
         receiversArray = JSONDecoder.getTransactionReceiversData(transactionData);
         debtAmountsArray = JSONDecoder.getTransactionDebtAmountsData(transactionData);
         timeStampsArray = JSONDecoder.getTransactionDateStampsData(transactionData);
+        descriptionsArray = JSONDecoder.getTransactionDescriptionsData(transactionData);
         transactionLV = (ListView) findViewById(R.id.transactionsListView);
-        transactionAdapter = new DebtListAdapter(this.getApplicationContext(), usersArray, receiversArray, debtAmountsArray, timeStampsArray);
+        transactionAdapter = new DebtListAdapter(this.getApplicationContext(), usersArray, receiversArray, debtAmountsArray, timeStampsArray, descriptionsArray);
         transactionLV.setAdapter(transactionAdapter);
     }
 

@@ -191,6 +191,7 @@ public class WelcomeActivity extends AppCompatActivity {
         downloadProgressBar = (ProgressBar) findViewById(R.id.downloadProgressBar);
         downloadProgressPercentageTV = (TextView) findViewById(R.id.downloadProgressPercentageTV);
         downloadInformationsTV = (TextView) findViewById(R.id.downloadInformationsTV);
+        changeLogLayout = (RelativeLayout) findViewById(R.id.changeLogLayout);
         welcomeButton = (ImageView) findViewById(R.id.welcomeButton);
         welcomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,6 +276,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         new UpdateAppAsync().execute();
                         Log.v(LOG_TAG, "Update procedure started");
                         updateDialogLayout.setVisibility(View.GONE);
+                        changeLogLayout.setVisibility(View.GONE);
                         downloadProgressBar.setVisibility(View.VISIBLE);
                         downloadInformationsTV.setVisibility(View.VISIBLE);
                     }
@@ -295,7 +297,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (welcomeButton.getVisibility() == View.VISIBLE) {
                         welcomeButton.setVisibility(View.GONE);
-                        changeLogLayout = (RelativeLayout) findViewById(R.id.changeLogLayout);
                         changeLogLayout.setVisibility(View.VISIBLE);
                         TextView changeLogTV = (TextView) findViewById(R.id.changeLogTV);
                         TextView apkSizeTV = (TextView) findViewById(R.id.apkSizeTV);

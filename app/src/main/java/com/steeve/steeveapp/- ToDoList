@@ -4,19 +4,15 @@ PRESENT:
 
  - Download update with download speed
 
- - Corrupted apk after download
-
  - Usage guide
 
- - Debt entry description in transactions list
+ - Exception on SettingsActivity open sul telefono di pando
+
+ - Doppio click necessario per focus su transactionListItem
 
 FUTURE:
- - Possibile miglioramento di JSONDecoder , provare a separare scaricamento dati e funzioni di popolamento in Shopping activity
 
  - General custom toasts
 
- - Custom notification sound mp3 synth generator
-
- - Audio generator
 
 

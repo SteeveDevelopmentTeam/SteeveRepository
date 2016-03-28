@@ -78,6 +78,23 @@ class JSONDecoder {
         return dateStampsArray;
     }
 
+    public static String [] getTransactionDescriptionsData (String inputString) throws  JSONException {
+
+        String [] descriptionsArray;
+        Integer transactionsCount;
+        JSONArray reader;
+
+        reader = new JSONArray(inputString);
+        transactionsCount = reader.length();
+        descriptionsArray = new String[transactionsCount];
+        for (Integer i=0; i<transactionsCount; i++) {
+            JSONObject obj2 = (JSONObject)reader.get(i);
+            String user = (String) obj2.get("description");
+            descriptionsArray[i] = user;
+        }
+        return descriptionsArray;
+    }
+
     public static Float [] getUserSummary(int userId, String dbDataSummary) throws JSONException {
         JSONArray reader;
 
