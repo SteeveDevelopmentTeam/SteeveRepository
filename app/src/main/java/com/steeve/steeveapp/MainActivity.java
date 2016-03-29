@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
     }
 
     private void setupList() {
-        listImages = new int[]{R.drawable.dollar_icon2, R.drawable.shopping_icon2, R.drawable.door_icon, android.R.drawable.arrow_up_float};
+        listImages = new int[]{R.drawable.dollar_icon2, R.drawable.shopping_icon2, R.drawable.door_icon, R.drawable.settings_icon};
         listTexts = new String[]{"Gimme money", "Shopping", "Doorbell", "Settings"};
         actionList= (ListView) findViewById(R.id.drawer_list);
         inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

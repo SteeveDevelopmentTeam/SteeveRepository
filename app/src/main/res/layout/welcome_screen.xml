@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/darker_gray"
-        android:text="SteeveNet v1.4\n Made by potheads, for the same potheads."
+        android:text="SteeveNet v1.5\n Made by potheads, for the same potheads."
         android:gravity="center"
         android:textSize="15sp"
         android:id="@+id/textView15"

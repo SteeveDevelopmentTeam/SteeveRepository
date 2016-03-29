@@ -121,6 +121,7 @@ public class LetMeInActivity extends Activity {
             public void onClick(View v) {
                 if (customNotificationMessageLayout.getVisibility() == View.GONE) {
                     customNotificationMessageLayout.setVisibility(View.VISIBLE);
+                    customNotificationMessageET.requestFocus();
                 } else {
                     customNotificationMessageLayout.setVisibility(View.GONE);
                 }

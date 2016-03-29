@@ -665,7 +665,8 @@ public class DebtActivity extends Activity{
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == 2) {
             Log.v(LOG_TAG, "Entered onActivityResult, REFRESHING");
-            finish();
+            Intent refreshIntent = getIntent();
+            refreshIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(getIntent());
         }
     }
@@ -673,8 +674,8 @@ public class DebtActivity extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Intent returnIntent = new Intent();
+        /*Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
-        finish();
+        finish();*/
     }
 }

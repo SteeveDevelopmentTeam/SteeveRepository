@@ -88,9 +88,9 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void setupUserPreferences() {
         sharedPreferences = getSharedPreferences("userDataPreferences", Context.MODE_PRIVATE);
-        Integer retrievedCounter = sharedPreferences.getInt("loginCounter", 1);
+        Integer retrievedCounter = sharedPreferences.getInt("loginCounter", 0);
         SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
-        editor.putInt("loginCounter", retrievedCounter++);
+        editor.putInt("loginCounter", retrievedCounter+1);
         editor.apply();
         userName = sharedPreferences.getString("userName", null);
         userID = sharedPreferences.getInt("userID", -1);
@@ -287,6 +287,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         updateDialogLayout.setVisibility(View.GONE);
+                        changeLogLayout.setVisibility(View.GONE);
                     }
                 });
             }
@@ -337,7 +338,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Object[] params) {
-            path = Environment.getExternalStorageDirectory().getPath()+"/SteeveAppUpdateAPK.apk";
+            path = Environment.getExternalStorageDirectory().getPath()+"/SteeveAppUpdateAPKv"+remoteApkVersion+".apk";
             remoteApkPath = "http://steeve.altervista.org/AutoUpdateAPK/app-debug.apk";
             try {
                 URL url = new URL(remoteApkPath);
