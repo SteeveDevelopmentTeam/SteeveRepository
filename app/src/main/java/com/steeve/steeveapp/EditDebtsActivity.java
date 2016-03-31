@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.azimolabs.keyboardwatcher.KeyboardWatcher;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -51,15 +53,17 @@ import java.util.Date;
 /**
  * Created by Roman on 02/03/2016.
  */
-public class EditDebtsActivity  extends Activity{
+public class EditDebtsActivity  extends Activity implements KeyboardWatcher.OnKeyboardToggleListener{
     private ToggleButton tbP1;
-    private ToggleButton tbRi1;
-    private ToggleButton tbRo1;
-    private ToggleButton tbN1;
     private ToggleButton tbP2;
+    private ToggleButton tbRi1;
     private ToggleButton tbRi2;
-    private ToggleButton tbRo2;
+    private ToggleButton tbN1;
     private ToggleButton tbN2;
+    private ToggleButton tbRo1;
+    private ToggleButton tbRo2;
+    private ToggleButton tbA1;
+    private ToggleButton tbA2;
     private ImageButton editDebtsTickButton;
     private EditText debtNumET, debtDescriptionET;
     private ToggleButton firstSelectedButton;
@@ -76,16 +80,20 @@ public class EditDebtsActivity  extends Activity{
     private String [] timeStampsArray;
     private String [] descriptionsArray;
     public static Context context;
-    public DebtListAdapter transactionAdapter;
+    public TransactionsListAdapter transactionAdapter;
     private TextView editDebtsTitleTV;
     private ProgressBar progressBarEditDebt;
     private boolean isFooterDescriptionShowing;
+    private KeyboardWatcher keyboardWatcher;
+    private boolean isKeyboardShowing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
         setContentView(R.layout.edit_debts_layout);
+        keyboardWatcher = new KeyboardWatcher(this);
+        keyboardWatcher.setListener(this);
         setToggleButtonListeners();
         editDebtsTitleTV = (TextView) findViewById(R.id.editDebtsTitle);
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "Righteous-Regular.ttf");
@@ -117,6 +125,8 @@ public class EditDebtsActivity  extends Activity{
         tbRi2 = (ToggleButton) findViewById(R.id.toggleButtonRi2);
         tbRo2 = (ToggleButton) findViewById(R.id.toggleButtonRo2);
         tbN2  = (ToggleButton) findViewById(R.id.toggleButtonN2);
+        tbA1 = (ToggleButton) findViewById(R.id.toggleButtonA1);
+        tbA2  = (ToggleButton) findViewById(R.id.toggleButtonA2);
         editDebtsTickButton = (ImageButton) findViewById(R.id.editDebtsTickButton);
         debtNumET = (EditText) findViewById(R.id.moneyNumEditText);
         debtDescriptionET = (EditText) findViewById(R.id.transactionDescriptionET);
@@ -173,6 +183,18 @@ public class EditDebtsActivity  extends Activity{
             }
         });
 
+        tbA1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    tbA2.setVisibility(View.INVISIBLE);
+                    firstSelectedButton = tbA1;
+                } else { tbA2.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+
 
         editDebtsTickButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +210,9 @@ public class EditDebtsActivity  extends Activity{
                         secondSelectedButton = tbRo2;
                     } else if (tbN2.isChecked()) {
                         secondSelectedButton = tbN2;
-                    }
+                    } else if (tbA2.isChecked()) {
+                    secondSelectedButton = tbA2;
+                }
                 }
                 if (DCswitch.isChecked()) {
                     debtNumET.setText(Float.toString(Float.parseFloat(debtNumET.getText().toString()) * -1));
@@ -346,6 +370,16 @@ public class EditDebtsActivity  extends Activity{
         }
     }
 
+    @Override
+    public void onKeyboardShown(int keyboardSize) {
+        isKeyboardShowing = true;
+    }
+
+    @Override
+    public void onKeyboardClosed() {
+        isKeyboardShowing = false;
+    }
+
     private class AsyncConnection extends AsyncTask {
 
         @Override
@@ -363,9 +397,11 @@ public class EditDebtsActivity  extends Activity{
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             //Resetto la pagina per permettere un'altra transazione immediata
-            RelativeLayout editDebtsLayout = (RelativeLayout) findViewById(R.id.editDebtsLayout);
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editDebtsLayout.getWindowToken(), 0);
+            if (isKeyboardShowing) {
+                RelativeLayout editDebtsLayout = (RelativeLayout) findViewById(R.id.editDebtsLayout);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(editDebtsLayout.getWindowToken(), 0);
+            }
             Toast.makeText(getApplicationContext(), "Transaction recorded!", Toast.LENGTH_SHORT).show();
             debtNumET.setText(null);
             debtDescriptionET.setText(null);
@@ -504,13 +540,14 @@ public class EditDebtsActivity  extends Activity{
         timeStampsArray = JSONDecoder.getTransactionDateStampsData(transactionData);
         descriptionsArray = JSONDecoder.getTransactionDescriptionsData(transactionData);
         transactionLV = (ListView) findViewById(R.id.transactionsListView);
-        transactionAdapter = new DebtListAdapter(this.getApplicationContext(), usersArray, receiversArray, debtAmountsArray, timeStampsArray, descriptionsArray);
+        transactionAdapter = new TransactionsListAdapter(this.getApplicationContext(), usersArray, receiversArray, debtAmountsArray, timeStampsArray, descriptionsArray);
         transactionLV.setAdapter(transactionAdapter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        keyboardWatcher.destroy();
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();

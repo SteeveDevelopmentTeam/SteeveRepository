@@ -21,189 +21,66 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/editDebtsTitle">
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:background="@drawable/custom_toggle_button_selector"
-        android:textColor="@color/white"
-        android:textOn="Pando"
-        android:textOff="Pando"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButtonP1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/custom_toggle_button_selector"
-        android:textColor="@color/white"
-        android:textOn="Rimo"
-        android:textOff="Rimo"
-        android:id="@+id/toggleButtonRi1"
-        android:layout_below="@+id/toggleButtonP1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/custom_toggle_button_selector"
-        android:textColor="@color/white"
-        android:textOn="Roman"
-        android:textOff="Roman"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButtonRo1"
-        android:layout_below="@+id/toggleButtonRi1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/custom_toggle_button_selector"
-        android:textColor="@color/white"
-        android:textOn="Neri"
-        android:textOff="Neri"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButtonN1"
-        android:layout_below="@+id/toggleButtonRo1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:background="@drawable/custom_toggle_button_selector"
-        android:textColor="@color/white"
-        android:textOn="Pando"
-        android:textOff="Pando"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButtonP2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/custom_toggle_button_selector"
-        android:textColor="@color/white"
-        android:textOn="Rimo"
-        android:textOff="Rimo"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButtonRi2"
-        android:layout_below="@+id/toggleButtonP2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/custom_toggle_button_selector"
-        android:textColor="@color/white"
-        android:textOn="Roman"
-        android:textOff="Roman"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButtonRo2"
-        android:layout_below="@+id/toggleButtonRi2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/custom_toggle_button_selector"
-        android:textColor="@color/white"
-        android:textOn="Neri"
-        android:textOff="Neri"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButtonN2"
-        android:layout_below="@+id/toggleButtonRo2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:id="@+id/editDebtsTickButton"
-            android:src="@drawable/tick"
-            android:layout_below="@+id/toggleButtonRo2"
-            android:layout_centerHorizontal="true" />
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:gravity="center"
             android:layout_height="200dp"
-            android:layout_alignRight="@+id/textView12"
-            android:layout_alignEnd="@+id/textView12"
             android:layout_above="@+id/toggleButtonN2"
-            android:layout_toEndOf="@+id/toggleButtonP1"
-            android:layout_alignLeft="@+id/textView12"
-            android:layout_alignStart="@+id/textView12">
-        <EditText
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:hint="€"
-            android:textColorHint="@android:color/holo_red_dark"
-            android:textColor="#ff00"
-            android:id="@+id/moneyNumEditText"
-            android:layout_below="@+id/CDswitch"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:focusableInTouchMode="true">
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:hint="€"
+                android:textColorHint="@android:color/holo_red_dark"
+                android:textColor="#ff00"
+                android:id="@+id/moneyNumEditText"
+                android:layout_below="@+id/CDswitch"
+                android:layout_centerHorizontal="true" />
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:track="@drawable/switch_custom_track"
-            android:thumb="@drawable/switch_custom_thumb"
-            android:textOn="Credito"
-            android:textOff="Debito"
-            android:id="@+id/CDswitch"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp" />
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:track="@drawable/switch_custom_track"
+                android:thumb="@drawable/switch_custom_thumb"
+                android:textOn="Credito"
+                android:textOff="Debito"
+                android:id="@+id/CDswitch"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="C"
-            android:textSize="20sp"
-            android:textColor="#0f0"
-            android:id="@+id/textView10"
-            android:layout_alignTop="@+id/CDswitch"
-            android:layout_toRightOf="@+id/CDswitch"
-            android:layout_toEndOf="@+id/CDswitch"
-            android:layout_marginLeft="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="C"
+                android:textSize="20sp"
+                android:textColor="#0f0"
+                android:id="@+id/textView10"
+                android:layout_alignTop="@+id/CDswitch"
+                android:layout_toRightOf="@+id/CDswitch"
+                android:layout_toEndOf="@+id/CDswitch"
+                android:layout_marginLeft="5dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="D"
-            android:textColor="#ff00"
-            android:textSize="20sp"
-            android:id="@+id/textView11"
-            android:layout_alignTop="@+id/CDswitch"
-            android:layout_toLeftOf="@+id/CDswitch"
-            android:layout_toStartOf="@+id/CDswitch"
-            android:layout_marginRight="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="D"
+                android:textColor="#ff00"
+                android:textSize="20sp"
+                android:id="@+id/textView11"
+                android:layout_alignTop="@+id/CDswitch"
+                android:layout_toLeftOf="@+id/CDswitch"
+                android:layout_toStartOf="@+id/CDswitch"
+                android:layout_marginRight="5dp" />
 
             <EditText
                 android:layout_width="150dp"
@@ -219,6 +96,166 @@
                 android:layout_marginRight="10dp" />
         </RelativeLayout>
 
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Pando"
+            android:textOff="Pando"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonP1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Rimo"
+            android:textOff="Rimo"
+            android:id="@+id/toggleButtonRi1"
+            android:layout_below="@+id/toggleButtonP1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Roman"
+            android:textOff="Roman"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonRo1"
+            android:layout_below="@+id/toggleButtonRi1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Neri"
+            android:textOff="Neri"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonN1"
+            android:layout_below="@+id/toggleButtonRo1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Angie"
+            android:textOff="Angie"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonA1"
+            android:layout_below="@+id/toggleButtonN1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Pando"
+            android:textOff="Pando"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonP2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Rimo"
+            android:textOff="Rimo"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonRi2"
+            android:layout_below="@+id/toggleButtonP2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Roman"
+            android:textOff="Roman"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonRo2"
+            android:layout_below="@+id/toggleButtonRi2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Neri"
+            android:textOff="Neri"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonN2"
+            android:layout_below="@+id/toggleButtonRo2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/custom_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="Angie"
+            android:textOff="Angie"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButtonA2"
+            android:layout_below="@+id/toggleButtonN2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:id="@+id/editDebtsTickButton"
+            android:src="@drawable/tick"
+            android:layout_below="@+id/toggleButtonRo2"
+            android:layout_centerHorizontal="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toggleButtonA1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -240,8 +277,8 @@
             android:textColor="@android:color/holo_green_light"
             android:textSize="20sp"
             android:id="@+id/textView12"
-            android:layout_below="@+id/toggleButtonN1"
             android:layout_centerHorizontal="true" />
+        </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/progressBarEditDebts"

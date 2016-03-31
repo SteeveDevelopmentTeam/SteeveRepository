@@ -19,25 +19,27 @@
         android:id="@+id/relativeLayout7">
 
         <ToggleButton
-            android:layout_width="70dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_toggle_button_selector"
+            android:background="@drawable/custom_circular_toggle_button_selector"
             android:textColor="@color/white"
-            android:textOn="Pando"
-            android:textOff="Pando"
+            android:textOn="P"
+            android:textOff="P"
+            android:text="Pando"
             android:id="@+id/pOpenButton"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/riOpenButton"
             android:layout_toStartOf="@+id/riOpenButton"
-            android:layout_marginRight="2dp" />
+            android:layout_marginRight="2dp"/>
 
         <ToggleButton
-            android:layout_width="70dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_toggle_button_selector"
+            android:background="@drawable/custom_circular_toggle_button_selector"
             android:textColor="@color/white"
-            android:textOn="Rimo"
-            android:textOff="Rimo"
+            android:textOn="Ri"
+            android:textOff="Ri"
+            android:text="Rimo"
             android:id="@+id/riOpenButton"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/nOpenButton"
@@ -46,12 +48,13 @@
             android:layout_marginRight="2dp" />
 
         <ToggleButton
-            android:layout_width="70dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_toggle_button_selector"
+            android:background="@drawable/custom_circular_toggle_button_selector"
             android:textColor="@color/white"
-            android:textOn="Neri"
-            android:textOff="Neri"
+            android:textOn="N"
+            android:textOff="N"
+            android:text="Neri"
             android:id="@+id/nOpenButton"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/roOpenButton"
@@ -60,17 +63,32 @@
             android:layout_marginRight="2dp" />
 
         <ToggleButton
-            android:layout_width="70dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_toggle_button_selector"
+            android:background="@drawable/custom_circular_toggle_button_selector"
             android:textColor="@color/white"
-            android:textOn="Roman"
-            android:textOff="Roman"
+            android:textOn="Ro"
+            android:textOff="Ro"
+            android:text="Roman"
             android:id="@+id/roOpenButton"
             android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/aOpenButton"
+            android:layout_toStartOf="@+id/aOpenButton"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp" />
+
+        <ToggleButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_circular_toggle_button_selector"
+            android:textColor="@color/white"
+            android:textOn="A"
+            android:textOff="A"
+            android:text="Angie"
+            android:id="@+id/aOpenButton"
+            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginLeft="2dp" />
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <ImageView

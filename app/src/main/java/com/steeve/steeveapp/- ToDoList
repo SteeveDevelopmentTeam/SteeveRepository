@@ -4,13 +4,14 @@ PRESENT:
 
  - Usage guide
 
+ - Fix back navigation
+
  - Exception on SettingsActivity open sul telefono di pando
 
  - Doppio click necessario per focus su transactionListItem
 
+ - Alternative layout for EditDebtsActivity
+
 FUTURE:
 
  - General custom toasts
-
-
-

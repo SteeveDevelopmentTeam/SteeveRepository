@@ -104,6 +104,7 @@ public class WelcomeActivity extends AppCompatActivity {
             arrayAdapter.add("Rimo");
             arrayAdapter.add("Neri");
             arrayAdapter.add("Roman");
+            arrayAdapter.add("Angie");
 
             builderSingle.setNegativeButton(
                     "Cancel",
@@ -127,9 +128,9 @@ public class WelcomeActivity extends AppCompatActivity {
                         userID = 1;
                     } else if (userName.equals("Neri")) {
                         userID = 2;
-                    } else {
+                    } else if (userName.equals("Roman")) {
                         userID = 3;
-                    }
+                    } else { userID = 4; }
                     editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
                     editor.putInt("userID", userID);
                     editor.apply();
@@ -290,6 +291,11 @@ public class WelcomeActivity extends AppCompatActivity {
                         changeLogLayout.setVisibility(View.GONE);
                     }
                 });
+            } else {
+                File previousApkPath = new File( Environment.getExternalStorageDirectory().getPath()+"/SteeveAppUpdateAPKv"+Integer.toString(Integer.parseInt(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0]) - 1)+".apk");
+                if (previousApkPath.exists()) {
+                    previousApkPath.delete();
+                }
             }
 
             ImageView changeLogIV = (ImageView) findViewById(R.id.changeLogIV);

@@ -106,7 +106,8 @@ class JSONDecoder {
         Float rimoAmount =  Float.parseFloat((String) obj2.get("Rimo"));
         Float neriAmount =  Float.parseFloat((String) obj2.get("Neri"));
         Float romanAmount = Float.parseFloat((String) obj2.get("Roman"));
-        return new Float[]{pandoAmount, rimoAmount, neriAmount, romanAmount};
+        Float angieAmount = Float.parseFloat((String) obj2.get("Angie"));
+        return new Float[]{pandoAmount, rimoAmount, neriAmount, romanAmount, angieAmount};
     }
 
     public static String[] getUserShoppingData(int userId, String dbShoppingData) throws JSONException {

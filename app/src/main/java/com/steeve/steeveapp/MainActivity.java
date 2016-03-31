@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_layout);
         context = getApplicationContext();
         sharedPreferences = getSharedPreferences("userDataPreferences", MODE_PRIVATE);
+        Log.v(LOG_TAG, "MainActivity preferences: " + sharedPreferences.getAll().toString());
         setupListeners();
         setupStats();
         setupList();
@@ -64,15 +65,17 @@ public class MainActivity extends Activity {
         TextView statsDebtTV = (TextView) findViewById(R.id.statsUserDebt);
         TextView statsCreditTV = (TextView) findViewById(R.id.statsUserCredit);
         ImageView statsStatusIV = (ImageView) findViewById(R.id.statsStatusIV);
-        Log.v(LOG_TAG, "UserID before profile pic setting: " + userID);
+        Log.v(LOG_TAG, "MainActivity data: " + "userID: "+userID+"  Debit: "+userDebt+"  Credit: "+userCredit);
         if (userID.equals(0)) {
             statsProfilePic.setImageResource(R.drawable.pando_circle);
         } else if (userID.equals(1)) {
             statsProfilePic.setImageResource(R.drawable.rimo_circle);
         } else if (userID.equals(2)) {
             statsProfilePic.setImageResource(R.drawable.neri_circle);
+        }  else if (userID.equals(3)) {
+        statsProfilePic.setImageResource(R.drawable.roman_circle);
         } else {
-            statsProfilePic.setImageResource(R.drawable.roman_circle);
+            statsProfilePic.setImageResource(R.drawable.angie_circle);
         }
 
         if (userDebt == null) {

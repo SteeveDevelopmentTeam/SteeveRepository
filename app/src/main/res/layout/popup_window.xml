@@ -100,6 +100,28 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/sumTVDuser3"
             android:layout_toEndOf="@+id/sumTVDuser3" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:id="@+id/sumTVDuser4"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVDdebt3"
+            android:layout_toEndOf="@+id/sumTVDdebt3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            android:id="@+id/sumTVDdebt4"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVDuser4"
+            android:layout_toEndOf="@+id/sumTVDuser4" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -186,5 +208,28 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/sumTVCuser3"
             android:layout_toEndOf="@+id/sumTVCuser3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:id="@+id/sumTVCuser4"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVCdebt3"
+            android:layout_toEndOf="@+id/sumTVCdebt3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="18sp"
+            android:id="@+id/sumTVCdebt4"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/sumTVCuser4"
+            android:layout_toEndOf="@+id/sumTVCuser4" />
     </RelativeLayout>
 </RelativeLayout>

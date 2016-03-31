@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 /**
@@ -110,6 +111,19 @@ public class LetMeInActivity extends Activity {
                 if (roOpenButton.isChecked()) {
                     messageTarget = "Roman";
                 } else { messageTarget = null; }
+            }
+        });
+
+        final ToggleButton aOpenButton = (ToggleButton) findViewById(R.id.aOpenButton);
+        aOpenButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (aOpenButton.isChecked()) {
+                    messageTarget = "Angie";
+                } else {
+                    messageTarget = null;
+                    Toast.makeText(getApplicationContext(), "Please select a target", Toast.LENGTH_SHORT);
+                }
             }
         });
 
