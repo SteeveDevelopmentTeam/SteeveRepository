@@ -138,325 +138,6 @@ public class DebtActivity extends Activity{
         });
     }
 
-    private void populatePandoDataSummary(Integer userID, View popupWindow) throws JSONException {
-        TextView sumUserId = (TextView) popupWindow.findViewById(R.id.sumUserId);
-        TextView sumTVDuser1 = (TextView) popupWindow.findViewById(R.id.sumTVDuser1);
-        TextView sumTVDuser2 = (TextView) popupWindow.findViewById(R.id.sumTVDuser2);
-        TextView sumTVDuser3 = (TextView) popupWindow.findViewById(R.id.sumTVDuser3);
-        TextView sumTVDuser4 = (TextView) popupWindow.findViewById(R.id.sumTVDuser4);
-        TextView sumTVDdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt1);
-        TextView sumTVDdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt2);
-        TextView sumTVDdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt3);
-        TextView sumTVDdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt4);
-
-        TextView sumTVCuser1 = (TextView) popupWindow.findViewById(R.id.sumTVCuser1);
-        TextView sumTVCuser2 = (TextView) popupWindow.findViewById(R.id.sumTVCuser2);
-        TextView sumTVCuser3 = (TextView) popupWindow.findViewById(R.id.sumTVCuser3);
-        TextView sumTVCuser4 = (TextView) popupWindow.findViewById(R.id.sumTVCuser4);
-        TextView sumTVCdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt1);
-        TextView sumTVCdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt2);
-        TextView sumTVCdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt3);
-        TextView sumTVCdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt4);
-
-        sumUserId.setText("Pando");
-
-        Float[] pandoSummary = JSONDecoder.getUserSummary(userID, dbDataSummary);
-        if (pandoSummary[1] != 0) {
-            if (pandoSummary[1] > 0) {
-                sumTVDuser1.setText("Rimo: ");
-                sumTVDdebt1.setText(Float.toString(Math.abs(pandoSummary[1])));
-            } else {
-                sumTVCuser1.setText("Rimo: ");
-                sumTVCdebt1.setText(Float.toString(Math.abs(pandoSummary[1])));
-            }
-        }
-
-        if (pandoSummary[2] != 0) {
-            if (pandoSummary[2] > 0) {
-                sumTVDuser2.setText("Neri: ");
-                sumTVDdebt2.setText(Float.toString(Math.abs(pandoSummary[2])));
-            } else {
-                sumTVCuser2.setText("Neri: ");
-                sumTVCdebt2.setText(Float.toString(Math.abs(pandoSummary[2])));
-            }
-        }
-
-        if (pandoSummary[3] != 0) {
-            if (pandoSummary[3] > 0) {
-                sumTVDuser3.setText("Roman: ");
-                sumTVDdebt3.setText(Float.toString(Math.abs(pandoSummary[3])));
-            } else {
-                sumTVCuser3.setText("Roman: ");
-                sumTVCdebt3.setText(Float.toString(Math.abs(pandoSummary[3])));
-            }
-        }
-
-        if (pandoSummary[4] != 0) {
-            if (pandoSummary[4] > 0) {
-                sumTVDuser4.setText("Angie: ");
-                sumTVDdebt4.setText(Float.toString(Math.abs(pandoSummary[4])));
-            } else {
-                sumTVCuser4.setText("Angie: ");
-                sumTVCdebt4.setText(Float.toString(Math.abs(pandoSummary[4])));
-            }
-        }
-    }
-
-
-    private void populateRimoDataSummary(Integer userID, View popupWindow) throws JSONException {
-        TextView sumUserId = (TextView) popupWindow.findViewById(R.id.sumUserId);
-        TextView sumTVDuser1 = (TextView) popupWindow.findViewById(R.id.sumTVDuser1);
-        TextView sumTVDuser2 = (TextView) popupWindow.findViewById(R.id.sumTVDuser2);
-        TextView sumTVDuser3 = (TextView) popupWindow.findViewById(R.id.sumTVDuser3);
-        TextView sumTVDuser4 = (TextView) popupWindow.findViewById(R.id.sumTVDuser4);
-        TextView sumTVDdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt1);
-        TextView sumTVDdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt2);
-        TextView sumTVDdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt3);
-        TextView sumTVDdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt4);
-
-        TextView sumTVCuser1 = (TextView) popupWindow.findViewById(R.id.sumTVCuser1);
-        TextView sumTVCuser2 = (TextView) popupWindow.findViewById(R.id.sumTVCuser2);
-        TextView sumTVCuser3 = (TextView) popupWindow.findViewById(R.id.sumTVCuser3);
-        TextView sumTVCuser4 = (TextView) popupWindow.findViewById(R.id.sumTVCuser4);
-        TextView sumTVCdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt1);
-        TextView sumTVCdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt2);
-        TextView sumTVCdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt3);
-        TextView sumTVCdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt4);
-
-        sumUserId.setText("Rimo");
-        Float[] rimoSummary = JSONDecoder.getUserSummary(userID, dbDataSummary);
-        if (rimoSummary[0] != 0) {
-            if (rimoSummary[0] > 0) {
-                sumTVDuser1.setText("Pando: ");
-                sumTVDdebt1.setText(Float.toString(Math.abs(rimoSummary[0])));
-            } else {
-                sumTVCuser1.setText("Pando: ");
-                sumTVCdebt1.setText(Float.toString(Math.abs(rimoSummary[0])));
-            }
-        }
-
-        if (rimoSummary[2] != 0) {
-            if (rimoSummary[2] > 0) {
-                sumTVDuser2.setText("Neri: ");
-                sumTVDdebt2.setText(Float.toString(Math.abs(rimoSummary[2])));
-            } else {
-                sumTVCuser2.setText("Neri: ");
-                sumTVCdebt2.setText(Float.toString(Math.abs(rimoSummary[2])));
-            }
-        }
-
-        if (rimoSummary[3] != 0) {
-            if (rimoSummary[3] > 0) {
-                sumTVDuser3.setText("Roman: ");
-                sumTVDdebt3.setText(Float.toString(Math.abs(rimoSummary[3])));
-            } else {
-                sumTVCuser3.setText("Roman: ");
-                sumTVCdebt3.setText(Float.toString(Math.abs(rimoSummary[3])));
-            }
-        }
-
-        if (rimoSummary[4] != 0) {
-            if (rimoSummary[4] > 0) {
-                sumTVDuser4.setText("Angie: ");
-                sumTVDdebt4.setText(Float.toString(Math.abs(rimoSummary[4])));
-            } else {
-                sumTVCuser4.setText("Angie: ");
-                sumTVCdebt4.setText(Float.toString(Math.abs(rimoSummary[4])));
-            }
-        }
-    }
-
-
-    private void populateNeriDataSummary(Integer userID, View popupWindow) throws JSONException {
-        TextView sumUserId = (TextView) popupWindow.findViewById(R.id.sumUserId);
-        TextView sumTVDuser1 = (TextView) popupWindow.findViewById(R.id.sumTVDuser1);
-        TextView sumTVDuser2 = (TextView) popupWindow.findViewById(R.id.sumTVDuser2);
-        TextView sumTVDuser3 = (TextView) popupWindow.findViewById(R.id.sumTVDuser3);
-        TextView sumTVDuser4 = (TextView) popupWindow.findViewById(R.id.sumTVDuser4);
-        TextView sumTVDdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt1);
-        TextView sumTVDdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt2);
-        TextView sumTVDdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt3);
-        TextView sumTVDdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt4);
-
-        TextView sumTVCuser1 = (TextView) popupWindow.findViewById(R.id.sumTVCuser1);
-        TextView sumTVCuser2 = (TextView) popupWindow.findViewById(R.id.sumTVCuser2);
-        TextView sumTVCuser3 = (TextView) popupWindow.findViewById(R.id.sumTVCuser3);
-        TextView sumTVCuser4 = (TextView) popupWindow.findViewById(R.id.sumTVCuser4);
-        TextView sumTVCdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt1);
-        TextView sumTVCdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt2);
-        TextView sumTVCdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt3);
-        TextView sumTVCdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt4);
-
-        sumUserId.setText("Neri");
-        Float[] neriSummary = JSONDecoder.getUserSummary(userID, dbDataSummary);
-        if (neriSummary[0] != 0) {
-            if (neriSummary[0] > 0) {
-                sumTVDuser1.setText("Pando: ");
-                sumTVDdebt1.setText(Float.toString(Math.abs(neriSummary[0])));
-            } else {
-                sumTVCuser1.setText("Pando: ");
-                sumTVCdebt1.setText(Float.toString(Math.abs(neriSummary[0])));
-            }
-        }
-
-        if (neriSummary[1] != 0) {
-            if (neriSummary[1] > 0) {
-                sumTVDuser2.setText("Rimo: ");
-                sumTVDdebt2.setText(Float.toString(Math.abs(neriSummary[1])));
-            } else {
-                sumTVCuser2.setText("Rimo: ");
-                sumTVCdebt2.setText(Float.toString(Math.abs(neriSummary[1])));
-            }
-        }
-
-        if (neriSummary[3] != 0) {
-            if (neriSummary[3] > 0) {
-                sumTVDuser3.setText("Roman: ");
-                sumTVDdebt3.setText(Float.toString(Math.abs(neriSummary[3])));
-            } else {
-                sumTVCuser3.setText("Roman: ");
-                sumTVCdebt3.setText(Float.toString(Math.abs(neriSummary[3])));
-            }
-        }
-
-        if (neriSummary[4] != 0) {
-            if (neriSummary[4] > 0) {
-                sumTVDuser4.setText("Angie: ");
-                sumTVDdebt4.setText(Float.toString(Math.abs(neriSummary[4])));
-            } else {
-                sumTVCuser4.setText("Angie: ");
-                sumTVCdebt4.setText(Float.toString(Math.abs(neriSummary[4])));
-            }
-        }
-    }
-
-
-    private void populateRomanDataSummary(Integer userID, View popupWindow) throws JSONException {
-        TextView sumUserId = (TextView) popupWindow.findViewById(R.id.sumUserId);
-        TextView sumTVDuser1 = (TextView) popupWindow.findViewById(R.id.sumTVDuser1);
-        TextView sumTVDuser2 = (TextView) popupWindow.findViewById(R.id.sumTVDuser2);
-        TextView sumTVDuser3 = (TextView) popupWindow.findViewById(R.id.sumTVDuser3);
-        TextView sumTVDuser4 = (TextView) popupWindow.findViewById(R.id.sumTVDuser4);
-        TextView sumTVDdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt1);
-        TextView sumTVDdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt2);
-        TextView sumTVDdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt3);
-        TextView sumTVDdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt4);
-
-        TextView sumTVCuser1 = (TextView) popupWindow.findViewById(R.id.sumTVCuser1);
-        TextView sumTVCuser2 = (TextView) popupWindow.findViewById(R.id.sumTVCuser2);
-        TextView sumTVCuser3 = (TextView) popupWindow.findViewById(R.id.sumTVCuser3);
-        TextView sumTVCuser4 = (TextView) popupWindow.findViewById(R.id.sumTVCuser4);
-        TextView sumTVCdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt1);
-        TextView sumTVCdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt2);
-        TextView sumTVCdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt3);
-        TextView sumTVCdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt4);
-
-        sumUserId.setText("Roman");
-        Float[] romanSummary = JSONDecoder.getUserSummary(userID, dbDataSummary);
-        if (romanSummary[0] != 0) {
-            if (romanSummary[0] > 0) {
-                sumTVDuser1.setText("Pando: ");
-                sumTVDdebt1.setText(Float.toString(Math.abs(romanSummary[0])));
-            } else {
-                sumTVCuser1.setText("Pando: ");
-                sumTVCdebt1.setText(Float.toString(Math.abs(romanSummary[0])));
-            }
-        }
-
-        if (romanSummary[1] != 0) {
-            if (romanSummary[1] > 0) {
-                sumTVDuser2.setText("Rimo: ");
-                sumTVDdebt2.setText(Float.toString(Math.abs(romanSummary[1])));
-            } else {
-                sumTVCuser2.setText("Rimo: ");
-                sumTVCdebt2.setText(Float.toString(Math.abs(romanSummary[1])));
-            }
-        }
-
-        if (romanSummary[2] != 0) {
-            if (romanSummary[2] > 0) {
-                sumTVDuser3.setText("Neri: ");
-                sumTVDdebt3.setText(Float.toString(Math.abs(romanSummary[2])));
-            } else {
-                sumTVCuser3.setText("Neri: ");
-                sumTVCdebt3.setText(Float.toString(Math.abs(romanSummary[2])));
-            }
-        }
-
-        if (romanSummary[4] != 0) {
-            if (romanSummary[4] > 0) {
-                sumTVDuser4.setText("Angie: ");
-                sumTVDdebt4.setText(Float.toString(Math.abs(romanSummary[4])));
-            } else {
-                sumTVCuser4.setText("Angie: ");
-                sumTVCdebt4.setText(Float.toString(Math.abs(romanSummary[4])));
-            }
-        }
-    }
-
-
-    private void populateAngieDataSummary(Integer userID, View popupWindow) throws JSONException {
-        TextView sumUserId = (TextView) popupWindow.findViewById(R.id.sumUserId);
-        TextView sumTVDuser1 = (TextView) popupWindow.findViewById(R.id.sumTVDuser1);
-        TextView sumTVDuser2 = (TextView) popupWindow.findViewById(R.id.sumTVDuser2);
-        TextView sumTVDuser3 = (TextView) popupWindow.findViewById(R.id.sumTVDuser3);
-        TextView sumTVDuser4 = (TextView) popupWindow.findViewById(R.id.sumTVDuser4);
-        TextView sumTVDdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt1);
-        TextView sumTVDdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt2);
-        TextView sumTVDdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt3);
-        TextView sumTVDdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVDdebt4);
-
-        TextView sumTVCuser1 = (TextView) popupWindow.findViewById(R.id.sumTVCuser1);
-        TextView sumTVCuser2 = (TextView) popupWindow.findViewById(R.id.sumTVCuser2);
-        TextView sumTVCuser3 = (TextView) popupWindow.findViewById(R.id.sumTVCuser3);
-        TextView sumTVCuser4 = (TextView) popupWindow.findViewById(R.id.sumTVCuser4);
-        TextView sumTVCdebt1 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt1);
-        TextView sumTVCdebt2 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt2);
-        TextView sumTVCdebt3 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt3);
-        TextView sumTVCdebt4 = (TextView) popupWindow.findViewById(R.id.sumTVCdebt4);
-
-        sumUserId.setText("Angie");
-        Float[] angieSummary = JSONDecoder.getUserSummary(userID, dbDataSummary);
-        if (angieSummary[0] != 0) {
-            if (angieSummary[0] > 0) {
-                sumTVDuser1.setText("Pando: ");
-                sumTVDdebt1.setText(Float.toString(Math.abs(angieSummary[0])));
-            } else {
-                sumTVCuser1.setText("Pando: ");
-                sumTVCdebt1.setText(Float.toString(Math.abs(angieSummary[0])));
-            }
-        }
-
-        if (angieSummary[1] != 0) {
-            if (angieSummary[1] > 0) {
-                sumTVDuser2.setText("Rimo: ");
-                sumTVDdebt2.setText(Float.toString(Math.abs(angieSummary[1])));
-            } else {
-                sumTVCuser2.setText("Rimo: ");
-                sumTVCdebt2.setText(Float.toString(Math.abs(angieSummary[1])));
-            }
-        }
-
-        if (angieSummary[2] != 0) {
-            if (angieSummary[2] > 0) {
-                sumTVDuser3.setText("Neri: ");
-                sumTVDdebt3.setText(Float.toString(Math.abs(angieSummary[2])));
-            } else {
-                sumTVCuser3.setText("Neri: ");
-                sumTVCdebt3.setText(Float.toString(Math.abs(angieSummary[2])));
-            }
-        }
-
-        if (angieSummary[3] != 0) {
-            if (angieSummary[3] > 0) {
-                sumTVDuser4.setText("Roman: ");
-                sumTVDdebt4.setText(Float.toString(Math.abs(angieSummary[3])));
-            } else {
-                sumTVCuser4.setText("Roman: ");
-                sumTVCdebt4.setText(Float.toString(Math.abs(angieSummary[3])));
-            }
-        }
-    }
 
 
     public String readDbDataSummary() {
@@ -546,12 +227,10 @@ public class DebtActivity extends Activity{
             pandoDebitTotal = pandoDebitTotal + pandoData[4];
         }
         if (userID == 0) {
-            if (!temporaryCreditPreference.equals(pandoCreditTotal.toString()) || !temporaryDebtPreference.equals(pandoDebitTotal.toString())) {
-                SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
-                editor.putString("debt", pandoDebitTotal.toString());
-                editor.putString("credit", pandoCreditTotal.toString());
-                editor.apply();
-            }
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", pandoDebitTotal.toString());
+            editor.putString("credit", pandoCreditTotal.toString());
+            editor.apply();
         }
         
         
@@ -581,12 +260,10 @@ public class DebtActivity extends Activity{
             rimoDebitTotal = rimoDebitTotal + rimoData[4];
         }
         if (userID == 1) {
-            if (!temporaryCreditPreference.equals(rimoCreditTotal)) {
-                SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
-                editor.putString("debt", rimoDebitTotal.toString());
-                editor.putString("credit", rimoCreditTotal.toString());
-                editor.apply();
-            }
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", rimoDebitTotal.toString());
+            editor.putString("credit", rimoCreditTotal.toString());
+            editor.apply();
         }
 
 
@@ -616,12 +293,10 @@ public class DebtActivity extends Activity{
         }
 
         if (userID == 2) {
-            if (!temporaryCreditPreference.equals(neriCreditTotal)) {
-                SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
-                editor.putString("debt", neriDebitTotal.toString());
-                editor.putString("credit", neriCreditTotal.toString());
-                editor.apply();
-            }
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", neriDebitTotal.toString());
+            editor.putString("credit", neriCreditTotal.toString());
+            editor.apply();
         }
 
 
@@ -650,13 +325,10 @@ public class DebtActivity extends Activity{
             romanDebitTotal = romanDebitTotal + romanData[4];
         }
         if (userID == 3) {
-            if (!temporaryCreditPreference.equals(romanCreditTotal)) {
-                Log.v(LOG_TAG, "UPDATING Debt and Credit");
-                SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
-                editor.putString("debt", romanDebitTotal.toString());
-                editor.putString("credit", romanCreditTotal.toString());
-                editor.apply();
-            }
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", romanDebitTotal.toString());
+            editor.putString("credit", romanCreditTotal.toString());
+            editor.apply();
         }
 
 
@@ -685,13 +357,12 @@ public class DebtActivity extends Activity{
             angieDebitTotal = angieDebitTotal + angieData[3];
         }
         if (userID == 4) {
-            if (!temporaryCreditPreference.equals(angieCreditTotal)) {
-                SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
-                editor.putString("debt", angieDebitTotal.toString());
-                editor.putString("credit", angieCreditTotal.toString());
-                editor.apply();
-            }
+            SharedPreferences.Editor editor = getSharedPreferences("userDataPreferences", MODE_PRIVATE).edit();
+            editor.putString("debt", angieDebitTotal.toString());
+            editor.putString("credit", angieCreditTotal.toString());
+            editor.apply();
         }
+
         String [] adapterDebts = new String [] {Float.toString(pandoDebitTotal), Float.toString(rimoDebitTotal), Float.toString(neriDebitTotal), Float.toString(romanDebitTotal), Float.toString(angieDebitTotal)};
         String [] adapterCredits = new String [] {Float.toString(pandoCreditTotal), Float.toString(rimoCreditTotal), Float.toString(neriCreditTotal), Float.toString(romanCreditTotal), Float.toString(angieCreditTotal)};
         setupDebtList(dbDataSummary, adapterDebts, adapterCredits);

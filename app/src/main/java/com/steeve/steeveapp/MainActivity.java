@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
     private static LayoutInflater inflater = null;
     private Context context;
     private DrawerLayout drawer;
+    private TextView adminPanelTV;
 
     @Override
          protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +42,16 @@ public class MainActivity extends Activity {
         context = getApplicationContext();
         sharedPreferences = getSharedPreferences("userDataPreferences", MODE_PRIVATE);
         Log.v(LOG_TAG, "MainActivity preferences: " + sharedPreferences.getAll().toString());
-        setupListeners();
         setupStats();
+        setupListeners();
         setupList();
         setupDrawer();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setupStats();
     }
 
 
@@ -189,9 +196,9 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == 1) {
-            Log.v(LOG_TAG, "Entered onActivityResult, REFRESHING");
-            finish();
-            startActivity(getIntent());
+            //Log.v(LOG_TAG, "Entered onActivityResult, REFRESHING");
+            //finish();
+            //startActivity(getIntent());
         }
     }
 
@@ -203,6 +210,17 @@ public class MainActivity extends Activity {
                 reproducePando();
             }
         });
+        adminPanelTV = (TextView) findViewById(R.id.adminPanelTV);
+        if (userID == 3) {
+            adminPanelTV.setVisibility(View.VISIBLE);
+            adminPanelTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent openAdminPanelIntent = new Intent(getApplicationContext(), AdminPanelActivity.class);
+                    startActivity(openAdminPanelIntent);
+                }
+            });
+        }
     }
 
     private void reproducePando() {
@@ -223,18 +241,5 @@ public class MainActivity extends Activity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else { super.onBackPressed(); }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Runtime.getRuntime().gc();
     }
 }

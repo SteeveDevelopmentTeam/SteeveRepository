@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/darker_gray"
-        android:text="SteeveNet v1.5\n Made by potheads, for the same potheads."
+        android:text="SteeveNet v1.7\n Made by potheads, for the same potheads."
         android:gravity="center"
         android:textSize="15sp"
         android:id="@+id/textView15"
@@ -147,16 +147,35 @@
         android:layout_centerHorizontal="true"
         android:visibility="visible"
         android:layout_marginTop="5dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/downloadProgressBar"
+        android:id="@+id/downloadProgressLayout"
+        android:gravity="center_vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textSize="20sp"
+        android:id="@+id/downloadProgressPercentageTV"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/red"
-        android:textSize="20sp"
-        android:id="@+id/downloadProgressPercentageTV"
-        android:layout_below="@+id/downloadProgressBar"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:id="@+id/downloadSpeedTV"
+        android:layout_alignTop="@+id/downloadProgressPercentageTV"
+        android:layout_toEndOf="@+id/downloadProgressPercentageTV"
+        android:layout_alignBottom="@+id/downloadProgressPercentageTV"
+        android:layout_toRightOf="@+id/downloadProgressPercentageTV" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -166,11 +185,12 @@
         android:textColor="@color/red"
         android:textSize="15sp"
         android:id="@+id/downloadInformationsTV"
-        android:layout_below="@+id/downloadProgressPercentageTV"
+        android:layout_below="@+id/downloadProgressLayout"
         android:layout_centerHorizontal="true"
         android:background="@drawable/cd_container_shape"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:visibility="gone"/>
+
 </RelativeLayout>

@@ -1,15 +1,15 @@
 PRESENT:
 
- - Download update with download speed
-
- - Usage guide
-
- - Exception on SettingsActivity open sul telefono di pando
-
  - Doppio click necessario per focus su transactionListItem
 
  - Alternative layout for EditDebtsActivity
 
+ - Full NotificationService with all notification types
+
+ - Check if same RegID after reinstall
+
 FUTURE:
 
  - General custom toasts
+
+ - Usage guide

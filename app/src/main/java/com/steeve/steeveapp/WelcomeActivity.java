@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -55,26 +57,32 @@ public class WelcomeActivity extends AppCompatActivity {
     private String userName, token;
     private Integer userID;
     private GCMBroadcastReceiver mRegistrationBroadcastReceiver;
-    private boolean isReceiverRegistered;
+    private boolean isReceiverRegistered, updateInitiated;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private StringBuilder builder = new StringBuilder();
     private String remoteApkVersion;
     private int localVersionCode;
-    private String path, remoteApkPath;
+    private String path, remoteApkPath, downloadCounterString;
     private ImageView welcomeButton;
     private RelativeLayout changeLogLayout;
     private ProgressBar downloadProgressBar;
-    private TextView downloadProgressPercentageTV, downloadInformationsTV;
+    private TextView downloadProgressPercentageTV, downloadInformationsTV, downloadSpeedTV;
+    private long total, downloadSpeedCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isReceiverRegistered = false;
+        updateInitiated = false;
         setContentView(R.layout.welcome_screen);
-        checkForUpdates();
+        if (getIntent().getAction().equals("updateAction")) {
+            updateInitiated = true;
+            checkForUpdates();
+        } else { checkForUpdates(); }
         setButtonListener();
         setupUserPreferences();
     }
+
 
     private void checkForUpdates() {
         new CheckForUpdatesAsync().execute();
@@ -193,6 +201,7 @@ public class WelcomeActivity extends AppCompatActivity {
         downloadProgressPercentageTV = (TextView) findViewById(R.id.downloadProgressPercentageTV);
         downloadInformationsTV = (TextView) findViewById(R.id.downloadInformationsTV);
         changeLogLayout = (RelativeLayout) findViewById(R.id.changeLogLayout);
+        downloadSpeedTV = (TextView) findViewById(R.id.downloadSpeedTV);
         welcomeButton = (ImageView) findViewById(R.id.welcomeButton);
         welcomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,36 +272,48 @@ public class WelcomeActivity extends AppCompatActivity {
         try {
             if (!Integer.toString(localVersionCode).equals(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0])) {
                 Log.v(LOG_TAG, "Found updated version of APK!");
-                final RelativeLayout updateDialogLayout = (RelativeLayout) findViewById(R.id.updateDialogLayout);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateDialogLayout.setVisibility(View.VISIBLE);
-                    }
-                });
-                Button yesButton = (Button) findViewById(R.id.updateYesButton);
-                yesButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new UpdateAppAsync().execute();
-                        Log.v(LOG_TAG, "Update procedure started");
-                        updateDialogLayout.setVisibility(View.GONE);
-                        changeLogLayout.setVisibility(View.GONE);
-                        downloadProgressBar.setVisibility(View.VISIBLE);
-                        downloadInformationsTV.setVisibility(View.VISIBLE);
-                    }
-                });
+                if (updateInitiated) {
+                    new UpdateAppAsync().execute();
+                    Log.v(LOG_TAG, "Update procedure started from notification");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            changeLogLayout.setVisibility(View.GONE);
+                            downloadProgressBar.setVisibility(View.VISIBLE);
+                            downloadInformationsTV.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else {
+                    final RelativeLayout updateDialogLayout = (RelativeLayout) findViewById(R.id.updateDialogLayout);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateDialogLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    Button yesButton = (Button) findViewById(R.id.updateYesButton);
+                    yesButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new UpdateAppAsync().execute();
+                            Log.v(LOG_TAG, "Update procedure started");
+                            updateDialogLayout.setVisibility(View.GONE);
+                            changeLogLayout.setVisibility(View.GONE);
+                            downloadProgressBar.setVisibility(View.VISIBLE);
+                            downloadInformationsTV.setVisibility(View.VISIBLE);
+                        }
+                    });
 
-                Button noButton = (Button) findViewById(R.id.updateNoButton);
-                noButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        updateDialogLayout.setVisibility(View.GONE);
-                        changeLogLayout.setVisibility(View.GONE);
-                    }
-                });
-            } else {
-                File previousApkPath = new File( Environment.getExternalStorageDirectory().getPath()+"/SteeveAppUpdateAPKv"+Integer.toString(Integer.parseInt(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0]) - 1)+".apk");
+                    Button noButton = (Button) findViewById(R.id.updateNoButton);
+                    noButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updateDialogLayout.setVisibility(View.GONE);
+                            changeLogLayout.setVisibility(View.GONE);
+                        }
+                    });
+                }
+                File previousApkPath = new File( Environment.getExternalStorageDirectory().getPath()+"/steeveapp-updateapk-v"+Integer.toString(Integer.parseInt(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0]) - 1)+".apk");
                 if (previousApkPath.exists()) {
                     previousApkPath.delete();
                 }
@@ -344,7 +365,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Object[] params) {
-            path = Environment.getExternalStorageDirectory().getPath()+"/SteeveAppUpdateAPKv"+remoteApkVersion+".apk";
+            try {
+                path = Environment.getExternalStorageDirectory().getPath()+"/steeveapp-updateapk-v"+(Integer.toString(Integer.parseInt(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0])+1))+".apk";
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             remoteApkPath = "http://steeve.altervista.org/AutoUpdateAPK/app-debug.apk";
             try {
                 URL url = new URL(remoteApkPath);
@@ -357,16 +382,43 @@ public class WelcomeActivity extends AppCompatActivity {
                 // download the file
                 InputStream input = new BufferedInputStream(url.openStream());
                 OutputStream output = new FileOutputStream(path);
+                Log.v(LOG_TAG, "APK name: " + path);
 
                 byte data[] = new byte[1024];
-                long total = 0;
+                total = 0;
+                downloadSpeedCounter = 0;
                 int count;
+
+                Looper l = Looper.getMainLooper();
+                final Handler h = new Handler(l);
+                final int delay = 1000;
+
+                Runnable downloadRunnable = new Runnable(){
+                    public void run(){
+                        DecimalFormat dec = new DecimalFormat("0.00");
+                        double k = (total-downloadSpeedCounter)/1024.0;
+                        double m = (total-downloadSpeedCounter)/1024000.0;
+
+                        if (m > 1) {
+                            downloadCounterString = dec.format(m).concat("MB/s");
+                        } else {
+                            downloadCounterString = dec.format(k).concat("KB/s");
+                        }
+                        Log.v(LOG_TAG, "Download info:    Total: " +total+ "   DownloadSpeedCounter: " +downloadSpeedCounter+ "    Subtranction: "+(total-downloadSpeedCounter));
+                        downloadSpeedTV.setText(downloadCounterString);
+                        downloadSpeedCounter = total;
+                        h.postDelayed(this, delay);
+                    }
+                };
+                h.postDelayed(downloadRunnable, delay);
+
                 while ((count = input.read(data)) != -1) {
                     total += count;
                     publishProgress((int) (total * 100 / fileLength));
                     output.write(data, 0, count);
                 }
 
+                h.removeCallbacks(downloadRunnable);
                 output.flush();
                 output.close();
                 input.close();
@@ -380,8 +432,9 @@ public class WelcomeActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Object[] progress) {
             downloadProgressBar.setProgress((int) progress[0]);
-            if ((int)progress[0]<=100)
-            downloadProgressPercentageTV.setText(progress[0]+"%");
+            if ((int)progress[0]<=100) {
+                downloadProgressPercentageTV.setText(progress[0] + "%");
+            }
             super.onProgressUpdate(progress);
         }
 
