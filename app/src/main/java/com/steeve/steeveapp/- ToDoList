@@ -4,9 +4,15 @@ PRESENT:
 
  - Alternative layout for EditDebtsActivity
 
- - Full NotificationService with all notification types
-
  - Check if same RegID after reinstall
+
+ - Crash on SettingsActivity
+
+ - OpenConfirm notification not working - ?
+
+ - Device detection on install - GET ALL DEVICE NAMES
+
+ - Daily riddle
 
 FUTURE:
 

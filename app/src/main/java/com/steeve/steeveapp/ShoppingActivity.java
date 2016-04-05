@@ -61,14 +61,22 @@ public class ShoppingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_layout);
-        setupListeners();
-        setupProgressBar();
-        shoppingTitleTV = (TextView) findViewById(R.id.shoppingTitle);
-        Typeface myTypeface = Typeface.createFromAsset(getAssets(), "AllertaStencil-Regular.ttf");
-        shoppingTitleTV.setTypeface(myTypeface);
         askForID();
-        new getTokenSetConnection().execute();
-        Log.v(LOG_TAG, "Local need: " + need);
+        if (userID == 4) {
+            RelativeLayout mainShoppingLayout = (RelativeLayout) findViewById(R.id.mainShoppingLayout);
+            RelativeLayout angieShoppingLayout = (RelativeLayout) findViewById(R.id.angieShoppingLayout);
+            mainShoppingLayout.setVisibility(View.GONE);
+            angieShoppingLayout.setVisibility(View.VISIBLE);
+        } else {
+            setupListeners();
+            setupProgressBar();
+            shoppingTitleTV = (TextView) findViewById(R.id.shoppingTitle);
+            Typeface myTypeface = Typeface.createFromAsset(getAssets(), "AllertaStencil-Regular.ttf");
+            shoppingTitleTV.setTypeface(myTypeface);
+            new Connection().execute();
+            new getTokenSetConnection().execute();
+            Log.v(LOG_TAG, "Local need: " + need);
+        }
     }
 
     private void setupProgressBar() {
@@ -95,7 +103,6 @@ public class ShoppingActivity extends Activity {
         } else {
             personalStatus = roStatusButton;
         }
-        new Connection().execute();
     }
 
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -161,6 +162,8 @@ public class MainActivity extends Activity {
                 holder.tv = (TextView) rowView.findViewById(R.id.tileText);
                 holder.img = (ImageView) rowView.findViewById(R.id.tileImage);
                 holder.tv.setText(listTexts[position]);
+                Typeface myTypeface = Typeface.createFromAsset(getAssets(), "Lobster-Regular.ttf");
+                holder.tv.setTypeface(myTypeface);
                 holder.img.setImageResource(listImages[position]);
                 rowView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -196,9 +199,7 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == 1) {
-            //Log.v(LOG_TAG, "Entered onActivityResult, REFRESHING");
-            //finish();
-            //startActivity(getIntent());
+            Log.v(LOG_TAG, "Entered onActivityResult");
         }
     }
 
@@ -241,5 +242,13 @@ public class MainActivity extends Activity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else { super.onBackPressed(); }
+    }
+
+    @Override
+    protected void onPause() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        super.onPause();
     }
 }

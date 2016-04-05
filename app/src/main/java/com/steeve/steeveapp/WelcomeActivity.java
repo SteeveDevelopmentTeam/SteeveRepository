@@ -102,6 +102,14 @@ public class WelcomeActivity extends AppCompatActivity {
         editor.apply();
         userName = sharedPreferences.getString("userName", null);
         userID = sharedPreferences.getInt("userID", -1);
+        //TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+        //TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+        //TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+        //TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+        //TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+        //TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+        // Device recognization and userName automatic setting
+        Log.v(LOG_TAG, "Device name: " +android.os.Build.DEVICE);
         if (userName == null && userID == -1) {
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(WelcomeActivity.this);
             //builderSingle.setIcon(R.drawable.ic_launcher);
@@ -313,10 +321,6 @@ public class WelcomeActivity extends AppCompatActivity {
                         }
                     });
                 }
-                File previousApkPath = new File( Environment.getExternalStorageDirectory().getPath()+"/steeveapp-updateapk-v"+Integer.toString(Integer.parseInt(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0]) - 1)+".apk");
-                if (previousApkPath.exists()) {
-                    previousApkPath.delete();
-                }
             }
 
             ImageView changeLogIV = (ImageView) findViewById(R.id.changeLogIV);
@@ -328,8 +332,10 @@ public class WelcomeActivity extends AppCompatActivity {
                         changeLogLayout.setVisibility(View.VISIBLE);
                         TextView changeLogTV = (TextView) findViewById(R.id.changeLogTV);
                         TextView apkSizeTV = (TextView) findViewById(R.id.apkSizeTV);
+                        TextView apkVersionTV = (TextView) findViewById(R.id.apkVersionTV);
                         try {
                             changeLogTV.setText(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[1]);
+                            apkVersionTV.setText("1."+JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0]);
                             int apkSize = (Integer.parseInt(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[2]));
                             String apkSizeString;
                             DecimalFormat dec = new DecimalFormat("0.00");
@@ -367,6 +373,11 @@ public class WelcomeActivity extends AppCompatActivity {
         protected String doInBackground(Object[] params) {
             try {
                 path = Environment.getExternalStorageDirectory().getPath()+"/steeveapp-updateapk-v"+(Integer.toString(Integer.parseInt(JSONDecoder.getRemoteApkVersion(remoteApkVersion)[0])+1))+".apk";
+                File previousApkPath = new File(path);
+                if (previousApkPath.exists()) {
+                    previousApkPath.delete();
+                    Log.v(LOG_TAG, "Deleting File before installing");
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

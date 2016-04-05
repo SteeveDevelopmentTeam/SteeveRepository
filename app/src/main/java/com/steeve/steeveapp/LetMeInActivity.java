@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,10 +27,10 @@ public class LetMeInActivity extends Activity {
     private String LOG_TAG = "LetMeInActivity";
     private String messageTarget;
     private TextView letMeInTitleTV;
-    private RelativeLayout customNotificationButtonLayout;
-    private RelativeLayout customNotificationMessageLayout;
+    private RelativeLayout customNotificationButtonLayout, customNotificationMessageLayout, letMeInLayout;
     private EditText customNotificationMessageET;
     private BroadcastReceiver receiver;
+    private ToggleButton pOpenButton, riOpenButton, nOpenButton, roOpenButton, aOpenButton;
 
 
     @Override
@@ -70,56 +71,76 @@ public class LetMeInActivity extends Activity {
             }
         });
 
-        final ToggleButton pOpenButton = (ToggleButton) findViewById(R.id.pOpenButton);
+        pOpenButton = (ToggleButton) findViewById(R.id.pOpenButton);
         pOpenButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (pOpenButton.isChecked()) {
                     messageTarget = "Pando";
+                    riOpenButton.setChecked(false);
+                    nOpenButton.setChecked(false);
+                    roOpenButton.setChecked(false);
+                    aOpenButton.setChecked(false);
                 } else {
                     messageTarget = null;
                 }
             }
         });
 
-        final ToggleButton riOpenButton = (ToggleButton) findViewById(R.id.riOpenButton);
+        riOpenButton = (ToggleButton) findViewById(R.id.riOpenButton);
         riOpenButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (riOpenButton.isChecked()) {
                     messageTarget = "Rimo";
+                    pOpenButton.setChecked(false);
+                    nOpenButton.setChecked(false);
+                    roOpenButton.setChecked(false);
+                    aOpenButton.setChecked(false);
                 } else {
                     messageTarget = null;
                 }
             }
         });
 
-        final ToggleButton nOpenButton = (ToggleButton) findViewById(R.id.nOpenButton);
+        nOpenButton = (ToggleButton) findViewById(R.id.nOpenButton);
         nOpenButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (nOpenButton.isChecked()) {
                     messageTarget = "Neri";
+                    pOpenButton.setChecked(false);
+                    riOpenButton.setChecked(false);
+                    roOpenButton.setChecked(false);
+                    aOpenButton.setChecked(false);
                 } else { messageTarget = null; }
             }
         });
 
-        final ToggleButton roOpenButton = (ToggleButton) findViewById(R.id.roOpenButton);
+        roOpenButton = (ToggleButton) findViewById(R.id.roOpenButton);
         roOpenButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (roOpenButton.isChecked()) {
                     messageTarget = "Roman";
+                    pOpenButton.setChecked(false);
+                    riOpenButton.setChecked(false);
+                    nOpenButton.setChecked(false);
+                    aOpenButton.setChecked(false);
                 } else { messageTarget = null; }
             }
         });
 
-        final ToggleButton aOpenButton = (ToggleButton) findViewById(R.id.aOpenButton);
+        aOpenButton = (ToggleButton) findViewById(R.id.aOpenButton);
         aOpenButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (aOpenButton.isChecked()) {
                     messageTarget = "Angie";
+                    pOpenButton.setChecked(false);
+                    riOpenButton.setChecked(false);
+                    nOpenButton.setChecked(false);
+                    roOpenButton.setChecked(false);
                 } else {
                     messageTarget = null;
                     Toast.makeText(getApplicationContext(), "Please select a target", Toast.LENGTH_SHORT);
@@ -130,12 +151,15 @@ public class LetMeInActivity extends Activity {
         customNotificationMessageLayout = (RelativeLayout) findViewById(R.id.customNotificationMessageLayout);
         customNotificationButtonLayout = (RelativeLayout) findViewById(R.id.editNotificationMessageLayout);
         customNotificationMessageET = (EditText) findViewById(R.id.notificationCustomMessageET);
+        letMeInLayout = (RelativeLayout) findViewById(R.id.letMeInLayout);
         customNotificationButtonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (customNotificationMessageLayout.getVisibility() == View.GONE) {
                     customNotificationMessageLayout.setVisibility(View.VISIBLE);
                     customNotificationMessageET.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(customNotificationMessageET, 0);
                 } else {
                     customNotificationMessageLayout.setVisibility(View.GONE);
                 }

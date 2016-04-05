@@ -30,7 +30,6 @@ public class SteeveNetApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         ACRA.init(this);
     }
 }

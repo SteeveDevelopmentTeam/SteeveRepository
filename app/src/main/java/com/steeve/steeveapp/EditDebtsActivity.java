@@ -215,7 +215,11 @@ public class EditDebtsActivity  extends Activity implements KeyboardWatcher.OnKe
                 }
                 }
                 if (DCswitch.isChecked()) {
-                    debtNumET.setText(Float.toString(Float.parseFloat(debtNumET.getText().toString()) * -1));
+                    if (!debtNumET.getText().equals("")) {
+                        debtNumET.setText(Float.toString(Float.parseFloat(debtNumET.getText().toString()) * -1));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Insert debt value first!", Toast.LENGTH_SHORT).show();
+                    }
                 } //Controllo se si registra un debito o un credito
                 new AsyncConnection().execute();
                 Long tsLong = System.currentTimeMillis();

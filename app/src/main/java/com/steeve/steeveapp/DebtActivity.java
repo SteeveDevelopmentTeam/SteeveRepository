@@ -2,7 +2,6 @@ package com.steeve.steeveapp;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -12,7 +11,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,22 +36,10 @@ public class DebtActivity extends Activity{
     private String LOG_TAG = "DebtActivity LOG";
     public StringBuilder builder = new StringBuilder();
     public StringBuilder builder2 = new StringBuilder();
-    public String dbDataSummary, debtPreference, creditPreference, temporaryDebtPreference, temporaryCreditPreference;
-    private ProgressDialog progress;
-    private Boolean isPopupShowing = false;
+    public String dbDataSummary, temporaryDebtPreference, temporaryCreditPreference;
     private TextView debtActivityTitleTV;
     private SharedPreferences sharedPreferences;
     private Integer userID;
-    private Float pandoCreditTotal;
-    private Float pandoDebitTotal;
-    private Float rimoCreditTotal;
-    private Float rimoDebitTotal;
-    private Float neriCreditTotal;
-    private Float neriDebitTotal;
-    private Float romanCreditTotal;
-    private Float romanDebitTotal;
-    private Float angieCreditTotal;
-    private Float angieDebitTotal;
     private ProgressBar progressBarDebt;
     private boolean goingToEditDebtsActivity = false;
     private ListView debtListView;
@@ -91,34 +77,6 @@ public class DebtActivity extends Activity{
         animation.start();
     }
 
-    private void setDebtPreferences() {
-        debtPreference = sharedPreferences.getString("debt", null);
-        creditPreference = sharedPreferences.getString("credit", null);
-        if ( debtPreference == null || creditPreference == null) {
-            switch (userID) {
-                case 0:
-                    debtPreference = pandoDebitTotal.toString();
-                    creditPreference = pandoCreditTotal.toString();
-                    break;
-                case 1:
-                    debtPreference = rimoDebitTotal.toString();
-                    creditPreference = rimoCreditTotal.toString();
-                    break;
-                case 2:
-                    debtPreference = neriDebitTotal.toString();
-                    creditPreference = neriCreditTotal.toString();
-                    break;
-                case 3:
-                    debtPreference = romanDebitTotal.toString();
-                    creditPreference = romanCreditTotal.toString();
-                    break;
-                default:
-                    debtPreference = angieDebitTotal.toString();
-                    creditPreference = angieCreditTotal.toString();
-                    break;
-            }
-        }
-    }
 
     @Override
     protected void onResume () {
@@ -127,7 +85,7 @@ public class DebtActivity extends Activity{
     }
 
     private void setupListeners() {
-        ImageButton editDebtsButton = (ImageButton) findViewById(R.id.debtsEditButton);
+        TextView editDebtsButton = (TextView) findViewById(R.id.debtsEditButton);
         editDebtsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +149,6 @@ public class DebtActivity extends Activity{
                     progressBarDebt.setVisibility(View.GONE);
                     try {
                         populateUserData();
-                        setDebtPreferences();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -204,8 +161,8 @@ public class DebtActivity extends Activity{
         Log.v(LOG_TAG, "POPULATING DEBT LIST");
         //Carico dati Pando
         Float [] pandoData = JSONDecoder.getUserSummary(0, dbDataSummary);
-        pandoCreditTotal = 0f;
-        pandoDebitTotal =  0f;
+        Float pandoCreditTotal = 0f;
+        Float pandoDebitTotal = 0f;
         if (pandoData[1] <= 0 ) { 
             pandoCreditTotal = pandoCreditTotal + pandoData[1];
         } else {
@@ -237,8 +194,8 @@ public class DebtActivity extends Activity{
 
         //Carico dati Rimo
         Float [] rimoData = JSONDecoder.getUserSummary(1, dbDataSummary);
-        rimoCreditTotal = 0f;
-        rimoDebitTotal =  0f;
+        Float rimoCreditTotal = 0f;
+        Float rimoDebitTotal = 0f;
         if (rimoData[0] <= 0 ) {
             rimoCreditTotal = rimoCreditTotal + rimoData[0];
         } else {
@@ -269,8 +226,8 @@ public class DebtActivity extends Activity{
 
         //Carico dati Neri
         Float [] neriData = JSONDecoder.getUserSummary(2, dbDataSummary);
-        neriCreditTotal = 0f;
-        neriDebitTotal =  0f;
+        Float neriCreditTotal = 0f;
+        Float neriDebitTotal = 0f;
         if (neriData[0] <= 0 ) {
             neriCreditTotal = neriCreditTotal + neriData[0];
         } else {
@@ -302,8 +259,8 @@ public class DebtActivity extends Activity{
 
         //Carico dati Roman
         Float [] romanData = JSONDecoder.getUserSummary(3, dbDataSummary);
-        romanCreditTotal = 0f;
-        romanDebitTotal =  0f;
+        Float romanCreditTotal = 0f;
+        Float romanDebitTotal = 0f;
         if (romanData[0] <= 0 ) {
             romanCreditTotal = romanCreditTotal + romanData[0];
         } else {
@@ -334,8 +291,8 @@ public class DebtActivity extends Activity{
 
         //Carico dati Angie
         Float [] angieData = JSONDecoder.getUserSummary(4, dbDataSummary);
-        angieCreditTotal = 0f;
-        angieDebitTotal =  0f;
+        Float angieCreditTotal = 0f;
+        Float angieDebitTotal = 0f;
         if (angieData[0] <= 0 ) {
             angieCreditTotal = angieCreditTotal + angieData[0];
         } else {

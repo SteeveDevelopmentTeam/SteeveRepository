@@ -132,7 +132,22 @@
             android:layout_below="@+id/textView16"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:id="@+id/apkVersionTV"
+            android:layout_toLeftOf="@+id/apkSizeTV"
+            android:layout_toStartOf="@+id/apkSizeTV"
+            android:layout_alignTop="@+id/apkSizeTV"
+            android:layout_alignBottom="@+id/apkSizeTV"
+            android:layout_marginRight="20dp"
+            android:gravity="center" />
     </RelativeLayout>
     <ProgressBar
         android:id="@+id/downloadProgressBar"
